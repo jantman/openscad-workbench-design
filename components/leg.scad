@@ -1,4 +1,4 @@
-module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,is_center_leg)
+module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,is_center_leg,is_inner_leg,hutch_shelf_height)
 {
     render() { // see note in README about rendering
         difference() {
@@ -34,6 +34,13 @@ module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,stru
               translate([0,0,leg_length-top_shelf_timber_height]){
                 cube([top_shelf_timber_depth/2,leg_timber_depth,top_shelf_timber_height],false);
                 cube([leg_timber_width,top_shelf_timber_depth/2,top_shelf_timber_height],false);
+              }
+            }
+
+            // inner tall (center and rear) legs only
+            if(is_inner_leg == true && leg_length > desktop_height) {
+              translate([0,0,hutch_shelf_height]){
+                cube([leg_timber_width,leg_timber_depth/2,strut_timber_depth],false);
               }
             }
         }

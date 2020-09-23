@@ -7,6 +7,7 @@ table_depth=36;
 shelf_thickness=0.5;
 shelf_height=10;
 top_shelf_height=72.5;
+hutch_shelf_height=50;
 
 // Legs
 leg_color="BurlyWood";

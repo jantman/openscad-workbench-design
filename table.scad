@@ -6,21 +6,22 @@ use <components/short_horizontal_plate.scad>
 use <components/desktop.scad>
 use <components/lower_shelf.scad>
 use <components/upper_side_tie.scad>
+use <components/hutch_shelf_support.scad>
 
 color(leg_color) {
     // Left front outside leg
-    leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+    leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,false,hutch_shelf_height);
 
     // Left center outside leg
     translate([0,center_leg_setback-center_leg_timber_depth,0]){
-      leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true);
+      leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true,false,hutch_shelf_height);
     }
 
     // Left rear outside leg
     translate([0,table_depth,0]){
         rotate([0,0,180]){
             mirror([1,0,0]){
-                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,false,hutch_shelf_height);
             }
         }
     }
@@ -28,39 +29,39 @@ color(leg_color) {
     // Left front inside leg
     translate([table_width/4,0,0]){
         mirror([1,0,0]){
-            leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+            leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,true,hutch_shelf_height);
         }
     }
 
     // Left center inside leg
     translate([table_width/4,center_leg_setback-center_leg_timber_depth,0]){
         mirror([1,0,0]){
-            leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true);
+            leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true,true,hutch_shelf_height);
         }
     }
 
     // Left rear inside leg
     translate([table_width/4,table_depth,0]){
         rotate([0,0,180]){
-                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,true,hutch_shelf_height);
         }
     }
 
     // Right front inside leg
     translate([(table_width/4)*3,0,0]){
-        leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+        leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,true,hutch_shelf_height);
     }
 
     // Right center inside leg
     translate([(table_width/4)*3,center_leg_setback-center_leg_timber_depth,0]){
-        leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true);
+        leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true,true,hutch_shelf_height);
     }
 
     // Right rear inside leg
     translate([(table_width/4)*3,table_depth,0]){
         rotate([0,0,180]){
             mirror([1,0,0]){
-                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,true,hutch_shelf_height);
             }
         }
     }
@@ -68,21 +69,21 @@ color(leg_color) {
     // Right front outside leg
     translate([table_width,0,0]){
         mirror([1,0,0]){
-            leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+            leg(front_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,false,hutch_shelf_height);
         }
     }
 
     // Right center outside leg
     translate([table_width,center_leg_setback-center_leg_timber_depth,0]){
         mirror([1,0,0]){
-            leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true);
+            leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,true,false,hutch_shelf_height);
         }
     }
 
     // Right rear outside leg
     translate([table_width,table_depth,0]){
             rotate([0,0,180]){
-                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false);
+                leg(rear_leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,false,false,hutch_shelf_height);
             }
     }
 
@@ -129,7 +130,19 @@ color(front_rear_strut_color){
     translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-strut_timber_height]){
         long_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,table_width);
     }
-}
+
+    // Hutch shelf front support
+    translate([(table_width/4)-center_leg_timber_width,center_leg_setback-center_leg_timber_depth,hutch_shelf_height]){
+      hutch_shelf_support(table_width,strut_timber_height,strut_timber_depth,center_leg_timber_depth,center_leg_timber_width,center_leg_timber_depth);
+    }
+
+    // Hutch shelf rear support
+    translate([((table_width/4)*3)+center_leg_timber_width,table_depth,hutch_shelf_height]){
+      rotate([0,0,180]){
+        hutch_shelf_support(table_width,strut_timber_height,strut_timber_depth,center_leg_timber_depth,center_leg_timber_width,center_leg_timber_depth);
+      }
+    }
+ }
 
 color(side_strut_color) {
   // Left outside desktop tie
@@ -228,5 +241,10 @@ color(desktop_shelf_color) {
   // top shelf
   translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length]) {
     cube([table_width,(table_depth-center_leg_setback)+center_leg_timber_depth,shelf_thickness],false);
+  }
+
+  // hutch shelf
+  translate([(table_width/4),center_leg_setback-center_leg_timber_depth,hutch_shelf_height+strut_timber_depth]){
+    cube([table_width/2,table_depth-center_leg_setback+center_leg_timber_depth,shelf_thickness],false);
   }
 }
