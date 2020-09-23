@@ -3,109 +3,74 @@ use <leg.scad>
 use <strut.scad>
 use <top.scad>
 use <shelf.scad>
+use <rabbeted_horizontal_plate.scad>
 
-//Leg
-translate([-table_width/2+leg_timber_width/2,-table_depth/2+leg_timber_width/2,0])
-{
-    leg(leg_length,lap_depth,leg_timber_width,strut_timber_width,shelf_height);
-}
+// Left front inside leg
+color("BurlyWood") {
+    // Left front outside leg
+    leg(front_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
 
-//Leg
-translate([table_width/2-leg_timber_width/2,-table_depth/2+leg_timber_width/2,0]){
-    rotate([0,0,90]){
-        leg(leg_length,lap_depth,leg_timber_width,strut_timber_width,shelf_height);
+    translate([table_width/4,0,0]){
+        mirror([1,0,0]){
+            leg(front_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+        }
+    }
+
+    // Left rear outside leg
+    translate([0,table_depth,0]){
+        rotate([0,0,180]){
+            mirror([1,0,0]){
+                leg(rear_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+            }
+        }
+    }
+
+    // Left rear inside leg
+    translate([table_width/4,table_depth,0]){
+        rotate([0,0,180]){
+                leg(rear_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+        }
+    }
+
+    // Right front inside leg
+    translate([(table_width/4)*3,0,0]){
+        leg(front_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+    }
+
+    // Right front outside leg
+    translate([table_width,0,0]){
+        mirror([1,0,0]){
+            leg(front_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+        }
+    }
+
+    // Right rear outside leg
+    translate([table_width,table_depth,0]){
+            rotate([0,0,180]){
+                leg(rear_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+            }
+    }
+
+    // Right rear inside leg
+    translate([(table_width/4)*3,table_depth,0]){
+        rotate([0,0,180]){
+            mirror([1,0,0]){
+                leg(rear_leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height);
+            }
+        }
     }
 }
 
-//Leg
-translate([-table_width/2+leg_timber_width/2,table_depth/2-leg_timber_width/2,0]){
-    rotate([0,0,-90]){
-        leg(leg_length,lap_depth,leg_timber_width,strut_timber_width,shelf_height);
+color("silver"){
+    // Front plate, under desk top
+    translate([0,0,desktop_height-strut_timber_height]){
+        rabbeted_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,lap_depth,table_width);
     }
-}
 
-//Leg
-translate([table_width/2-leg_timber_width/2,table_depth/2-leg_timber_width/2,0]){
-    rotate([0,0,180]){
-        leg(leg_length,lap_depth,leg_timber_width,strut_timber_width,shelf_height);
+    // Rear plate, under desk top
+    translate([0,table_depth,desktop_height-strut_timber_height]){
+        mirror([0,1,0]){
+            rabbeted_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,lap_depth,table_width);
+        }
     }
-}
-
-
-//Back High narrow strut
-translate([0,table_depth/2-strut_timber_depth/2,leg_length/2-strut_timber_width/2])
-{
-    rotate([180,0,0]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_width);
-    }
-}
-
-//Back low narrow strut
-translate([0,table_depth/2-strut_timber_depth/2, shelf_height-leg_length/2+strut_timber_width/2])
-{
-    rotate([180,0,0]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_width);
-    }
-}
-
-
-//Front high narrow strut
-translate([0,-table_depth/2+strut_timber_depth/2,leg_length/2-strut_timber_width/2])
-{
-    rotate([0,0,0]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_width);
-    }
-}
-
-//Back low narrow strut
-translate([0,-table_depth/2+strut_timber_depth/2, shelf_height-leg_length/2+strut_timber_width/2])
-{
-    rotate([0,0,0]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_width);
-    }
-}
-
-
-
-//Left high narrow strut
-translate([-table_width/2+strut_timber_depth/2,0,leg_length/2-strut_timber_width/2])
-{
-    rotate([180,0,90]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_depth);
-    }
-}
-
-//Left low narrow strut
-translate([-table_width/2+strut_timber_depth/2, 0, shelf_height-leg_length/2+strut_timber_width/2])
-{
-    rotate([180,0,90]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_depth);
-    }
-}
-
-
-//Left high narrow strut
-translate([table_width/2-strut_timber_depth/2,0,leg_length/2-strut_timber_width/2])
-{
-    rotate([0,0,90]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_depth);
-    }
-}
-
-//Left low narrow strut
-translate([table_width/2-strut_timber_depth/2, 0, shelf_height-leg_length/2+strut_timber_width/2])
-{
-    rotate([0,0,90]){
-        strut(lap_depth,leg_timber_width,strut_timber_width,strut_timber_depth,table_depth);
-    }
-}
-
-//Top
-translate([0,0,leg_length/2+shelf_thickness/2]){
-    top(table_width,table_depth,shelf_thickness,strut_timber_width,strut_timber_depth,leg_timber_width, lap_depth,43);
-}
-
-//Top
-translate([0,0,shelf_height-leg_length/2+strut_timber_width+shelf_thickness/2]){
-    shelf(table_width,table_depth,shelf_thickness,strut_timber_width,strut_timber_depth,leg_timber_width, lap_depth,43);
 }

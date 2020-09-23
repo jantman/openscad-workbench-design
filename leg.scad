@@ -1,29 +1,18 @@
-module leg(leg_length,lap_depth,leg_timber_width,strut_timber_width,shelf_height )
+module leg(leg_length,lap_depth,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height)
 {
     difference()
     {
-        cube([leg_timber_width,leg_timber_width,leg_length],true);
-        
+        cube([leg_timber_width,leg_timber_depth,leg_length],false);
+
         // Top tenons
-        translate([0,0,(leg_length-strut_timber_width)/2])
+        translate([0,0,desktop_height-strut_timber_height])
         {
-            translate([0,-((leg_timber_width-lap_depth)/2),0]){
-                cube([leg_timber_width,lap_depth,strut_timber_width],true);
+            // tenon cut on short side
+            translate([0,(leg_timber_width-strut_timber_depth),0]){
+                cube([leg_timber_width,lap_depth,strut_timber_height],false);
             }
-            translate([-((leg_timber_width-lap_depth)/2),0,0]){
-                cube([lap_depth,leg_timber_width,strut_timber_width],true);
-            }
+            cube([lap_depth,leg_timber_depth,strut_timber_height],false);
         }
-        
-        // Shelf tenons
-        translate([0,0,shelf_height-leg_length/2+strut_timber_width/2]){
-            translate([0,-((leg_timber_width-lap_depth)/2),0]){
-                cube([leg_timber_width,lap_depth,strut_timber_width],true);
-            }
-            translate([-((leg_timber_width-lap_depth)/2),0,0]){
-                cube([lap_depth,leg_timber_width,strut_timber_width],true);
-            }
-        }
+
     }
 }
-
