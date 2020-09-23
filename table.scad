@@ -7,6 +7,7 @@ use <components/desktop.scad>
 use <components/lower_shelf.scad>
 use <components/upper_side_tie.scad>
 use <components/hutch_shelf_support.scad>
+use <components/hutch_shelf.scad>
 
 color(leg_color) {
     // Left front outside leg
@@ -244,7 +245,5 @@ color(desktop_shelf_color) {
   }
 
   // hutch shelf
-  translate([(table_width/4),center_leg_setback-center_leg_timber_depth,hutch_shelf_height+strut_timber_depth]){
-    cube([table_width/2,table_depth-center_leg_setback+center_leg_timber_depth,shelf_thickness],false);
-  }
+  hutch_shelf(table_width,center_leg_setback,center_leg_timber_depth,center_leg_timber_width,hutch_shelf_height,strut_timber_depth,table_depth,shelf_thickness);
 }
