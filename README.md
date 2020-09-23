@@ -4,7 +4,6 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 ## Open questions for OpenSCAD
 
-* Can I modularize this code better? Is there some way that a function can take an object/child as an argument, and then operate on its geometry? While using modules to build specific parts helps reuse, I really wish this was... object-oriented. Like, I want to be able to do ``board.half_lap(left, front).half_lap(right, front).half_lap(left, top).half_lap(right, top)`` ... essentially where ``board`` is a 3D object, and the functions operate relative to its geometry.
 * How to do an exploded view? Can I configure this via a parameter/variable, so that at the CLI I can render both exploded and non-exploded views?
   * Maybe using [this](https://gist.github.com/damccull/1a1df5e785e56daf53e0d7b7d8ff219e)?
 * How can I show measurements/dimensions on a rendered drawing? Do I need to just export it to something else?
