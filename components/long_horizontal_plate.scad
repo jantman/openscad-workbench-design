@@ -1,4 +1,4 @@
-module long_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,table_width)
+module long_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,table_width,is_desktop = false)
 {
     render() { // see note in README about rendering
         difference() {
@@ -41,6 +41,23 @@ module long_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_dept
             translate([((table_width/4)*3),0,strut_timber_height/2])
             {
                 cube([leg_timber_width/2,strut_timber_depth,strut_timber_height/2],false);
+            }
+            if(is_desktop == true) {
+              // Left desktop support cutout
+              translate([((table_width/4)*2)-(table_width/8),0,strut_timber_height/2])
+              {
+                  cube([strut_timber_depth,strut_timber_depth,strut_timber_height/2],false);
+              }
+              // Center desktop support cutout
+              translate([(table_width/4)*2,0,strut_timber_height/2])
+              {
+                  cube([strut_timber_depth,strut_timber_depth,strut_timber_height/2],false);
+              }
+              // Right desktop support cutout
+              translate([((table_width/4)*2)+(table_width/8),0,strut_timber_height/2])
+              {
+                  cube([strut_timber_depth,strut_timber_depth,strut_timber_height/2],false);
+              }
             }
         }
     }
