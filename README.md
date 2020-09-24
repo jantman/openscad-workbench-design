@@ -2,6 +2,22 @@
 
 Openscad designs for my new workbench. This has been _very_ specifically sized to fit certain items.
 
+## Rendered Images
+
+[![default](renders/default_sm.png)](renders/default.png)
+
+[![front_left](renders/front_left_sm.png)](renders/front_left.png)
+
+[![left_oblique](renders/left_oblique_sm.png)](renders/left_oblique.png)
+
+[![left](renders/left_sm.png)](renders/left.png)
+
+[![back_lower](renders/back_lower_sm.png)](renders/back_lower.png)
+
+[![front_lower](renders/front_lower_sm.png)](renders/front_lower.png)
+
+[![right_rear_lower](renders/right_rear_lower_sm.png)](renders/right_rear_lower.png)
+
 ## Open questions for OpenSCAD
 
 * How to do an exploded view? Can I configure this via a parameter/variable, so that at the CLI I can render both exploded and non-exploded views?
