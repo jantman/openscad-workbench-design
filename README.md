@@ -2,6 +2,12 @@
 
 Openscad designs for my new workbench. This has been _very_ specifically sized to fit certain items.
 
+## ToDo
+
+* Rotate supports for top shelf to give more vertical space?
+* Higher shelf in left pillar under desktop, for printer control/power supply?
+* Import models of my printer and other things that will go on the desk; see how they fit
+
 ## Rendered Images
 
 [![assembled_default](renders/assembled_default_sm.png)](renders/assembled_default.png)
