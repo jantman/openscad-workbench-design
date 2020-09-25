@@ -1,7 +1,7 @@
 // height of desktop and shelves
 desktop_shelf_color="Sienna";
 desktop_height=31;
-desktop_thickness=1;
+desktop_thickness=0.75;
 table_width=96;
 table_depth=36;
 shelf_thickness=0.5;

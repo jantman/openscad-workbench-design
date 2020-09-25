@@ -46,6 +46,27 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 [![framing_right_rear_lower](renders/framing_right_rear_lower_sm.png)](renders/framing_right_rear_lower.png)
 
+## Parts List
+
+* 5x 2x4x8' - long horizontal struts
+* 10x 2x4x6' - 8x rear and center legs; 2x hutch shelf supports
+* 4x 2x4x31" - front legs
+* 2x 2x4x2' - Lower front side horizontal struts
+* 11x 2x4x3' - Depth-wise horizontal supports
+* 4x 2x4x1' - Upper shelf supports
+* 1x 8'x3' 3/4" MDF - desktop
+* 1x 6'x1' 1/2" MDF - hutch shelf
+* 1x 8'x1' 1/2" MDF - upper shelf
+* 2x 2'x3' 1/2" MDF - lower shelves
+
+## Materials List
+
+**Note:** The 1/2" MDF will fit exactly on one panel if we exclude kerf. That's what I've done, assuming the half-kerf short side will just be put on the back.
+
+* 23x 2x4x8'
+* 1x 4'x8'x3/4" MDF panel
+* 1x 4'x8'x1/2" MDF panel
+
 ## Open questions for OpenSCAD
 
 * How to do an exploded view? Can I configure this via a parameter/variable, so that at the CLI I can render both exploded and non-exploded views?
