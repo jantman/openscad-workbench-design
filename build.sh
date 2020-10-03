@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. get_deps.sh
+
 rm -f renders/*.jpg
 
 OUTPUTSIZE=3840,2160

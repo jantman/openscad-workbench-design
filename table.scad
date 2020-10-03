@@ -13,6 +13,8 @@ use <components/desktop_support.scad>
 
 show_surfaces = true;
 show_exploded = false;
+show_printer = true;
+show_printer_control = true;
 
 explode([10,6,4], false, show_exploded) {
     // #### FRONT (SHORT) LEGS ####
@@ -276,5 +278,21 @@ explode([10,6,4], false, show_exploded) {
         // hutch shelf
         hutch_shelf(table_width,center_leg_setback,center_leg_timber_depth,center_leg_timber_width,hutch_shelf_height,strut_timber_depth,table_depth,shelf_thickness);
       }
+    }
+}
+
+if(show_printer == true) {
+    translate([5,8,desktop_height+desktop_thickness]){
+        scale([1/25.4,1/25.4,1/25.4]){ // mm to inches
+            import("printer_fixed_shell.stl");
+        }
+    }
+}
+
+if(show_printer_control == true) {
+    translate([0,0,0]){
+        scale([1/25.4,1/25.4,1/25.4]){ // mm to inches
+            import("control_box_fixed.stl");
+        }
     }
 }
