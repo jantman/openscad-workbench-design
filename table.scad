@@ -285,6 +285,9 @@ explode([10,6,4], false, show_exploded) {
             cube([23,24,left_lower_shelf_thickness]);
         }
       }
+      translate([0,table_depth,(desktop_height+desktop_thickness)-8]){
+          import("components/pegboard_admeshed.stl");
+      }
     }
 }
 

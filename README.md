@@ -5,12 +5,8 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 ## ToDo
 
 * Rotate supports for top shelf to give more vertical space?
-* Higher shelf in left pillar under desktop, for printer control/power supply?
-* Import models of my printer and other things that will go on the desk; see how they fit
-* Pegboard backing - something like [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722). Standard at least around here is for 1/4" holes spaced 1" OC.
 * Adjustable shelves in opening on right side of hutch. Will need another set of vertical 2x4s in-between the rear and center ones on this side, for nailing surface. Shelves would be supported by either sliding into full-depth grooves in boards fastened to either side of the opening, or a similar system using 3d printed plastic holders. While it would take a LONG time, I should be able to print the needed supports on my Creality CR-10S 3d printer; they'd have a footprint of approximately 10-12" (254-305mm) square when printed, and when installed would just be stacked vertically one over another to make the full height.
   * The shelves themselves would be either [1/8" MDF](https://www.homedepot.com/p/Hardboard-Tempered-Panel-Common-1-8-in-4-ft-x-8-ft-Actual-0-115-in-x-47-7-in-x-95-7-in-832777/202189720) or [1/4" MDF](https://www.homedepot.com/p/Medium-Density-Fiberboard-Common-1-4-in-x-2-ft-x-4-ft-Actual-0-216-in-x-23-75-in-x-47-75-in-1508104/202089069) and would ideally be adjustable in 1/4" or 1/2" increments.
-  * I'd like quite a few 5" high openings for parts bins, and then a smaller number of 1"-2" high openings for plastic hardware organizers.
 
 ## Rendered Images
 
@@ -69,6 +65,7 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 * 1x 8'x1' 1/2" MDF - upper shelf
 * 2x 2'x3' 1/2" MDF - lower shelves
 * 1x 23"x24" 1/4" MDF or plywood - left side shelf under desktop
+* 1x 4'x8' pegboard, such as [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722)
 
 ## Materials List
 
@@ -77,6 +74,8 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 * 23x 2x4x8'
 * 1x 4'x8'x3/4" MDF panel
 * 1x 4'x8'x1/2" MDF panel
+* 1x 2'x2'x1/4" MDF or plywood panel
+* 1x 4'x8' pegboard, such as [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722)
 
 ## Open questions for OpenSCAD
 
