@@ -10,11 +10,13 @@ use <components/upper_side_tie.scad>
 use <components/hutch_shelf_support.scad>
 use <components/hutch_shelf.scad>
 use <components/desktop_support.scad>
+use <components/printer.scad>
 
 show_surfaces = true;
 show_exploded = false;
 show_printer = true;
 show_printer_control = true;
+show_mfc_printer = true;
 
 explode([10,6,4], false, show_exploded) {
     // #### FRONT (SHORT) LEGS ####
@@ -294,5 +296,11 @@ if(show_printer_control == true) {
         scale([1/25.4,1/25.4,1/25.4]){ // mm to inches
             import("control_box_fixed.stl");
         }
+    }
+}
+
+if(show_mfc_printer == true) {
+    translate([75,20,shelf_height+shelf_thickness]){
+        printer();
     }
 }

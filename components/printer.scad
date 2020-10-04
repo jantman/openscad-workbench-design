@@ -1,0 +1,41 @@
+module printer() {
+    render(){
+        scale([26/1000,19/1000,18.5/1000]){
+            translate([0,0,0]){
+                difference() {
+                    translate([-270,0,-400]){
+                        rotate([90,0,0]){
+                            import("printer_thingiverse_494241.stl");
+                        }
+                    }
+                    translate([-270,-1000,-400]){
+                        cube([270,1000,1050],false);
+                    }
+                    translate([700,-1000,-400]){
+                        cube([600,1000,1050],false);
+                    }
+                    translate([0,-1000,-400]){
+                        cube([700,1000,400],false);
+                    }
+                    translate([-10,-1000,650]){
+                        cube([750,1000,250],false);
+                    }
+                }
+            }
+            translate([0,-350,40]){
+                rotate([-30,0,0]){
+                    intersection() {
+                        translate([-270,0,-400]){
+                            rotate([90,0,0]){
+                                import("printer_thingiverse_494241.stl");
+                            }
+                        }
+                        translate([-10,-1000,650]){
+                            cube([750,1000,250],false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
