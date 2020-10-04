@@ -286,7 +286,9 @@ explode([10,6,4], false, show_exploded) {
         }
       }
       translate([0,table_depth,(desktop_height+desktop_thickness)-8]){
-          import("components/pegboard_admeshed.stl");
+          color("white"){
+              import("components/pegboard_admeshed.stl");
+          }
       }
     }
 }
