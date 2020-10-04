@@ -68,6 +68,7 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 * 1x 6'x1' 1/2" MDF - hutch shelf
 * 1x 8'x1' 1/2" MDF - upper shelf
 * 2x 2'x3' 1/2" MDF - lower shelves
+* 1x 23"x24" 1/4" MDF or plywood - left side shelf under desktop
 
 ## Materials List
 

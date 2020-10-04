@@ -8,6 +8,8 @@ shelf_thickness=0.5;
 shelf_height=6;
 top_shelf_height=72.5;
 hutch_shelf_height=50;
+left_lower_shelf_height=22;
+left_lower_shelf_thickness=0.25;
 
 // Legs
 front_leg_length=desktop_height;

@@ -1,4 +1,4 @@
-module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,is_center_leg,is_inner_leg,hutch_shelf_height)
+module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,strut_timber_depth,desktop_height,shelf_height,top_shelf_timber_depth,top_shelf_timber_height,is_center_leg,is_inner_leg,hutch_shelf_height,,left_lower_shelf_height,left_lower_shelf_thickness,is_left = false)
 {
     leg_color = leg_length > desktop_height ? "BurlyWood" : "NavajoWhite";
     color(leg_color) {
@@ -44,6 +44,13 @@ module leg(leg_length,leg_timber_width,leg_timber_depth,strut_timber_height,stru
                   translate([0,0,hutch_shelf_height]){
                     cube([leg_timber_width,leg_timber_depth/2,strut_timber_depth],false);
                   }
+                }
+
+                // shelf rabbets - left front and center legs only
+                if((leg_length <= desktop_height || is_center_leg == true) && is_left == true) {
+                    translate([leg_timber_width/2,0,left_lower_shelf_height]){
+                      #cube([leg_timber_width/2,leg_timber_depth,left_lower_shelf_thickness],false);
+                    }
                 }
             }
       }
