@@ -266,32 +266,72 @@ explode([10,6,4], false, show_exploded) {
     }
 
     if(show_surfaces == true) {
-      color(desktop_shelf_color) {
-        desktop();
-        // left lower shelf
-        lower_shelf();
-        // right lower shelf
-        translate([(table_width/4)*3,0,0]){
-          lower_shelf();
-        }
-        // top shelf
-        translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length]) {
-          cube([table_width,(table_depth-center_leg_setback)+center_leg_timber_depth,shelf_thickness],false);
-        }
+        color(desktop_shelf_color) {
+            desktop();
+            // left lower shelf
+            lower_shelf();
+            // right lower shelf
+            translate([(table_width/4)*3,0,0]){
+                lower_shelf();
+            }
+            // top shelf
+            translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length]) {
+                cube([table_width,(table_depth-center_leg_setback)+center_leg_timber_depth,shelf_thickness],false);
+            }
 
-        // hutch shelf
-        hutch_shelf();
+            // hutch shelf
+            hutch_shelf();
 
-        // lower left shelf
-        translate([leg_timber_width/2,0,left_lower_shelf_height]){
-            cube([23,24,left_lower_shelf_thickness]);
+            // lower left shelf
+            translate([leg_timber_width/2,0,left_lower_shelf_height]){
+                cube([23,24,left_lower_shelf_thickness]);
+            }
+
+            // BEGIN adjustable shelves
+            echo(parts_shelf_thickness=parts_shelf_thickness, parts_shelf_depth=parts_shelf_depth, parts_shelf_width=parts_shelf_width);
+            adj_shelf_x = ((table_width/4)*3)+leg_timber_width+parts_plate_thickness;
+            adj_shelf_y = center_leg_setback-(center_leg_timber_depth/2);
+            adj_shelf_base_z = desktop_height+desktop_thickness;
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*2)+(parts_shelf_spacing*3)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*5)+(parts_shelf_spacing*6)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*9)+(parts_shelf_spacing*10)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*13)+(parts_shelf_spacing*14)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*23)+(parts_shelf_spacing*24)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*33)+(parts_shelf_spacing*34)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*43)+(parts_shelf_spacing*44)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*53)+(parts_shelf_spacing*54)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*57)+(parts_shelf_spacing*58)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*61)+(parts_shelf_spacing*62)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*65)+(parts_shelf_spacing*66)]){
+                cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
+            }
+            // END adjustable shelves
         }
-      }
-      translate([0,table_depth,(desktop_height+desktop_thickness)-8]){
-          color("white"){
-              import("components/pegboard_admeshed.stl");
-          }
-      }
+        translate([0,table_depth,(desktop_height+desktop_thickness)-8]){
+            color("white"){
+                import("components/pegboard_admeshed.stl");
+            }
+        }
     }
 }
 
@@ -319,34 +359,34 @@ if(show_mfc_printer == true) {
 
 if(show_shelf_supports == true) {
     // first/lowest set
-    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness]){
+    translate([((table_width/4)*3)+leg_timber_width+parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness]){
         rotate([0,0,90]){
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness]){
         rotate([0,0,-90]){
             _shelf_support();
         }
     }
     // next set
-    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+11]){
+    translate([((table_width/4)*3)+leg_timber_width+parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+11]){
         rotate([0,0,90]){
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+11]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+11]){
         rotate([0,0,-90]){
             _shelf_support();
         }
     }
     // top set
-    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+22]){
+    translate([((table_width/4)*3)+leg_timber_width+parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+22]){
         rotate([0,0,90]){
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+22]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+22]){
         rotate([0,0,-90]){
             _shelf_support();
         }

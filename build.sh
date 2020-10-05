@@ -8,9 +8,9 @@ OUTPUTSIZE=3840,2160
 MARKDOWN=""
 
 declare -A VIEWS
-VIEWS[assembled]="-D'show_surfaces=true' -D'show_printer=true' -D'show_printer_control=true'"
-VIEWS[framing]="-D'show_surfaces=false' -D'show_printer=false' -D'show_printer_control=false'"
-VIEWS[exploded]="-D'show_exploded=true' -D'show_printer=false' -D'show_printer_control=false'"
+VIEWS[assembled]="-D'show_surfaces=true' -D'show_printer=true' -D'show_printer_control=true' -D'show_mfc_printer=true' -D'show_shelf_supports=true'"
+VIEWS[framing]="-D'show_surfaces=false' -D'show_printer=false' -D'show_printer_control=false' -D'show_mfc_printer=false' -D'show_shelf_supports=false'"
+VIEWS[exploded]="-D'show_surfaces=false' -D'show_exploded=true' -D'show_printer=false' -D'show_printer_control=false' -D'show_mfc_printer=false' -D'show_shelf_supports=false'"
 
 for prefix in "${!VIEWS[@]}"; do
   /bin/sh -c "openscad -o renders/${prefix}_default.png ${VIEWS[$prefix]} --autocenter --viewall --imgsize $OUTPUTSIZE --view axes,edges,scales --projection p --hardwarnings table.scad"
