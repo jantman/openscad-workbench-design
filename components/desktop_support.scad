@@ -1,5 +1,6 @@
-module desktop_support(table_depth,strut_timber_depth,strut_timber_height)
+module desktop_support()
 {
+    include <../config.scad>
     color("blue"){
         render() { // see note in README about rendering
             difference() {

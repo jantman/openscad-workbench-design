@@ -1,63 +1,65 @@
-module shelf_support(shelf_thickness = 0.25, shelf_spacing = 0.25, plate_thickness = 0.2, support_depth = 0.25, depth = 12, height = 11){ // in inches
-    top_screw_height = height - (shelf_spacing + (shelf_spacing/2));
+module shelf_support(){ // in inches
+    include <../config.scad>
+    top_screw_height = parts_support_height - (parts_shelf_spacing + (parts_shelf_spacing/2));
     difference(){
         union(){
-            cube([depth, plate_thickness, height]);
-            for(idx = [0 : (height / (shelf_spacing + shelf_thickness))-1]){
-                translate([0,0,idx * (shelf_spacing + shelf_thickness)]){
-                    _one_shelf_support(shelf_thickness = 0.25, shelf_spacing = 0.25, plate_thickness = 0.2, support_depth = 0.25, depth = 12);
+            cube([parts_shelf_depth, parts_plate_thickness, parts_support_height]);
+            for(idx = [0 : (parts_support_height / (parts_shelf_spacing + parts_shelf_thickness))-1]){
+                translate([0,0,idx * (parts_shelf_spacing + parts_shelf_thickness)]){
+                    _one_shelf_support();
                 }
             }
         }
-        translate([1,0,shelf_spacing/2]){
-            _screw_hole(plate_thickness, support_depth);
+        translate([1,0,parts_shelf_spacing/2]){
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([11,0,shelf_spacing/2]){
-            _screw_hole(plate_thickness, support_depth);
+        translate([11,0,parts_shelf_spacing/2]){
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([1,0,(shelf_spacing/2)+(height/2)]){
-            _screw_hole(plate_thickness, support_depth);
+        translate([1,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([11,0,(shelf_spacing/2)+(height/2)]){
-            _screw_hole(plate_thickness, support_depth);
+        translate([11,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
         translate([1,0,top_screw_height]){
-            _screw_hole(plate_thickness, support_depth);
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
         translate([11,0,top_screw_height]){
-            _screw_hole(plate_thickness, support_depth);
+            _screw_hole(parts_plate_thickness, parts_support_depth);
         }
     }
 }
 
-module _one_shelf_support(shelf_thickness = 0.25, shelf_spacing = 0.25, plate_thickness = 0.2, support_depth = 0.25, depth = 12){ // in inches
+module _one_shelf_support(){ // in inches
+    include <../config.scad>
     render() {
-        translate([support_depth,-1.0*support_depth,0]){
-            cube([depth-(support_depth*2), support_depth, shelf_spacing]);
+        translate([parts_support_depth,-1.0*parts_support_depth,0]){
+            cube([parts_shelf_depth-(parts_support_depth*2), parts_support_depth, parts_shelf_spacing]);
         }
-        translate([support_depth,0,0]){
+        translate([parts_support_depth,0,0]){
             intersection(){
-                cylinder(h=shelf_spacing, r=support_depth, center=false, $fn=48);
-                translate([-1 * support_depth,-1 * support_depth,0]){
-                    cube([support_depth, support_depth, shelf_spacing]);
+                cylinder(h=parts_shelf_spacing, r=parts_support_depth, center=false, $fn=48);
+                translate([-1 * parts_support_depth,-1 * parts_support_depth,0]){
+                    cube([parts_support_depth, parts_support_depth, parts_shelf_spacing]);
                 }
             }
         }
-        translate([depth-support_depth,0,0]){
+        translate([parts_shelf_depth-parts_support_depth,0,0]){
             intersection(){
-                cylinder(h=shelf_spacing, r=support_depth, center=false, $fn=48);
-                translate([0,-1 * support_depth,0]){
-                    cube([support_depth, support_depth, shelf_spacing]);
+                cylinder(h=parts_shelf_spacing, r=parts_support_depth, center=false, $fn=48);
+                translate([0,-1 * parts_support_depth,0]){
+                    cube([parts_support_depth, parts_support_depth, parts_shelf_spacing]);
                 }
             }
         }
     }
 }
 
-module _screw_hole(plate_thickness, support_depth) {
-    translate([0,plate_thickness,0]){
+module _screw_hole(parts_plate_thickness, parts_support_depth) {
+    translate([0,parts_plate_thickness,0]){
         rotate([90,0,0]){
-            cylinder(h=plate_thickness+support_depth, d=0.15, $fn=48);
+            cylinder(h=parts_plate_thickness+parts_support_depth, d=0.15, $fn=48);
         }
     }
 }

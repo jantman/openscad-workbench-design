@@ -1,5 +1,6 @@
-module lower_side_tie(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,table_width,table_depth,center_leg_setback,center_leg_timber_width,center_leg_timber_depth)
+module lower_side_tie()
 {
+    include <../config.scad>
     color("blue"){
         render() { // see note in README about rendering
             difference() {

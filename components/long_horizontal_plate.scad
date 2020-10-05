@@ -1,5 +1,6 @@
-module long_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,table_width,is_desktop = false)
+module long_horizontal_plate(is_desktop = false)
 {
+    include <../config.scad>
     color("silver") {
         render() { // see note in README about rendering
             difference() {

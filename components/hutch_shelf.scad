@@ -1,5 +1,6 @@
-module hutch_shelf(table_width,center_leg_setback,center_leg_timber_depth,center_leg_timber_width,hutch_shelf_height,strut_timber_depth,table_depth,shelf_thickness)
+module hutch_shelf()
 {
+    include <../config.scad>
     render() { // see note in README about rendering
       translate([(table_width/4)-center_leg_timber_width,center_leg_setback-center_leg_timber_depth,hutch_shelf_height+strut_timber_depth]){
         difference() {

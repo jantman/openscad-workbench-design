@@ -1,5 +1,6 @@
-module hutch_shelf_support(table_width,strut_timber_height,strut_timber_depth,leg_depth,center_leg_timber_width,center_leg_timber_depth)
+module hutch_shelf_support()
 {
+    include <../config.scad>
     color("SlateGray") {
         render() { // see note in README about rendering
             difference() {

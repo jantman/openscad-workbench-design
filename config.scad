@@ -11,6 +11,14 @@ hutch_shelf_height=50;
 left_lower_shelf_height=22;
 left_lower_shelf_thickness=0.25;
 
+// Parts Shelves
+parts_shelf_thickness = 0.25;
+parts_shelf_spacing = 0.25;
+parts_plate_thickness = 0.2;
+parts_support_depth = 0.25;
+parts_shelf_depth = 12;
+parts_support_height = 11;
+
 // Legs
 front_leg_length=desktop_height;
 rear_leg_length=top_shelf_height-shelf_thickness;

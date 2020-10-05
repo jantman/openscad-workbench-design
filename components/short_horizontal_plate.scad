@@ -1,5 +1,7 @@
-module short_horizontal_plate(leg_timber_depth,leg_timber_width,strut_timber_depth,strut_timber_height,plate_length)
+module short_horizontal_plate()
 {
+    include <../config.scad>
+    plate_length = table_width / 4;
     color("Gray") {
         render() { // see note in README about rendering
             difference() {
