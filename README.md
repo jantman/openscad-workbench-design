@@ -6,6 +6,7 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 * Rotate supports for top shelf to give more vertical space?
 * Adjustable shelves for supports in right side above desktop - [1/8" MDF](https://www.homedepot.com/p/Hardboard-Tempered-Panel-Common-1-8-in-4-ft-x-8-ft-Actual-0-115-in-x-47-7-in-x-95-7-in-832777/202189720) or [1/4" MDF](https://www.homedepot.com/p/Medium-Density-Fiberboard-Common-1-4-in-x-2-ft-x-4-ft-Actual-0-216-in-x-23-75-in-x-47-75-in-1508104/202089069) and would ideally be adjustable in 1/4" or 1/2" increments.
+* Countersunk screw holes in shelf supports, and specific screw hole diameter
 
 ## Rendered Images
 
