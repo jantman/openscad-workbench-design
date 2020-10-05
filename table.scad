@@ -11,12 +11,14 @@ use <components/hutch_shelf_support.scad>
 use <components/hutch_shelf.scad>
 use <components/desktop_support.scad>
 use <components/printer.scad>
+use <components/shelf_support.scad>
 
 show_surfaces = true;
 show_exploded = false;
 show_printer = true;
 show_printer_control = true;
 show_mfc_printer = true;
+show_shelf_supports = true;
 
 explode([10,6,4], false, show_exploded) {
     // #### FRONT (SHORT) LEGS ####
@@ -312,5 +314,47 @@ if(show_printer_control == true) {
 if(show_mfc_printer == true) {
     translate([75,20,shelf_height+shelf_thickness]){
         printer();
+    }
+}
+
+if(show_shelf_supports == true) {
+    // first/lowest set
+    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness]){
+        rotate([0,0,90]){
+            _shelf_support();
+        }
+    }
+    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness]){
+        rotate([0,0,-90]){
+            _shelf_support();
+        }
+    }
+    // next set
+    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+11]){
+        rotate([0,0,90]){
+            _shelf_support();
+        }
+    }
+    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+11]){
+        rotate([0,0,-90]){
+            _shelf_support();
+        }
+    }
+    // top set
+    translate([((table_width/4)*3)+leg_timber_width,center_leg_setback-(center_leg_timber_depth/2),desktop_height+desktop_thickness+22]){
+        rotate([0,0,90]){
+            _shelf_support();
+        }
+    }
+    translate([table_width-leg_timber_width,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+22]){
+        rotate([0,0,-90]){
+            _shelf_support();
+        }
+    }
+}
+
+module _shelf_support() {
+    render() {
+        shelf_support();
     }
 }
