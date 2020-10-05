@@ -2,7 +2,7 @@
 
 . get_deps.sh
 
-rm -f renders/*.jpg
+rm -f renders/*.png
 
 OUTPUTSIZE=3840,2160
 MARKDOWN=""
