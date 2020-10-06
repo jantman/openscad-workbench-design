@@ -16,11 +16,13 @@ module shelf_support(){ // in inches
         translate([11,0,parts_shelf_spacing/2]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([1,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
-            _screw_hole(parts_plate_thickness, parts_support_depth);
-        }
-        translate([11,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
-            _screw_hole(parts_plate_thickness, parts_support_depth);
+        if(parts_support_height > 3){
+            translate([1,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+                _screw_hole(parts_plate_thickness, parts_support_depth);
+            }
+            translate([11,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+                _screw_hole(parts_plate_thickness, parts_support_depth);
+            }
         }
         translate([1,0,top_screw_height]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
