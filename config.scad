@@ -26,7 +26,7 @@ parts_shelf_spacing = 0.15;
 parts_plate_thickness = 0.2;
 parts_support_depth = 0.25;
 parts_shelf_depth = 11;
-parts_support_height = 1.5;
+parts_support_height = 11;
 parts_shelf_width = (table_width/4)-(center_leg_timber_width*2)-(parts_plate_thickness*2);
 
 // Plates
