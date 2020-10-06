@@ -5,9 +5,7 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 ## ToDo
 
 * Rotate supports for top shelf to give more vertical space?
-* Countersunk screw holes in shelf supports, and specific screw hole diameter
 * Dimensioned drawing?
-* Confirm BoM
 
 ## Rendered Images
 
