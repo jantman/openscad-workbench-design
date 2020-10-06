@@ -1,5 +1,6 @@
 module shelf_support(){ // in inches
     include <../config.scad>
+    echo(str("BOM ITEM: shelf_support"));
     top_screw_height = parts_support_height - (parts_shelf_spacing + (parts_shelf_spacing/2));
     first_screw_offset = 0.5;
     second_screw_offset = 10.5;

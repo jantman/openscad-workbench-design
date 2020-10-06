@@ -1,6 +1,7 @@
 module pegboard(height = 48, width = 96) {
     cols = height - 1;
     rows = width - 1;
+    echo(str("BOM ITEM: pegboard"));
     color("white") {
         difference(){
             cube([width,3/16,height]);

@@ -1,6 +1,7 @@
 module short_horizontal_plate()
 {
     include <../config.scad>
+    echo(str("BOM ITEM: short_horizontal_plate"));
     plate_length = table_width / 4;
     render() { // see note in README about rendering
         difference() {

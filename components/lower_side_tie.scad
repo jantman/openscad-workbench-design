@@ -1,6 +1,7 @@
 module lower_side_tie()
 {
     include <../config.scad>
+    echo(str("BOM ITEM: lower_side_tie"));
     render() { // see note in README about rendering
         difference() {
             cube([strut_timber_depth,table_depth,strut_timber_height],false);

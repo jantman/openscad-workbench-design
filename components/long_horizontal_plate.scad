@@ -1,6 +1,7 @@
 module long_horizontal_plate(is_desktop = false, is_top_shelf = false)
 {
     include <../config.scad>
+    echo(str("BOM ITEM: long_horizontal_plate is_desktop=", is_desktop, " is_top_shelf=", is_top_shelf));
     render() { // see note in README about rendering
         if(is_top_shelf && top_shelf_timber_height < top_shelf_timber_depth){
             difference() {

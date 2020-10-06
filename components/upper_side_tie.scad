@@ -1,6 +1,7 @@
 module upper_side_tie()
 {
     include <../config.scad>
+    echo(str("BOM ITEM: upper_side_tie"));
     tie_length = (table_depth-center_leg_setback)+center_leg_timber_depth;
     render() { // see note in README about rendering
         if(top_shelf_timber_height >= top_shelf_timber_depth){

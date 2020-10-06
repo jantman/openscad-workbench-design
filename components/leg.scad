@@ -1,6 +1,7 @@
 module leg(leg_length,is_center_leg,is_inner_leg,is_left = false)
 {
     include <../config.scad>
+    echo(str("BOM ITEM: leg length=", leg_length, " is_center_leg=", is_center_leg, " is_left=", is_left));
     render() { // see note in README about rendering
         difference() {
             cube([leg_timber_width,leg_timber_depth,leg_length],false);
