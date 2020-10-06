@@ -111,6 +111,7 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 * 1x 23"x24" 1/4" MDF or plywood - left side shelf under desktop
 * 1x 4'x8' pegboard, such as [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722)
 * approx. 11x 12"x20.5" shelves made from [1/8" MDF](https://www.homedepot.com/p/Hardboard-Tempered-Panel-Common-1-8-in-4-ft-x-8-ft-Actual-0-115-in-x-47-7-in-x-95-7-in-832777/202189720) or [1/4" MDF](https://www.homedepot.com/p/Medium-Density-Fiberboard-Common-1-4-in-x-2-ft-x-4-ft-Actual-0-216-in-x-23-75-in-x-47-75-in-1508104/202089069) (a 4x8 sheet will make 14 shelves)
+* #8 x 3/4" screws for mounting shelf supports
 
 ## Materials List
 
