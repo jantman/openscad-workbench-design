@@ -21,11 +21,11 @@ center_leg_timber_depth=3.5;
 center_leg_setback=24;
 
 // Parts Shelves
-parts_shelf_thickness = 0.25;
-parts_shelf_spacing = 0.25;
+parts_shelf_thickness = 0.35;
+parts_shelf_spacing = 0.15;
 parts_plate_thickness = 0.2;
 parts_support_depth = 0.25;
-parts_shelf_depth = 12;
+parts_shelf_depth = 11;
 parts_support_height = 11;
 parts_shelf_width = (table_width/4)-(center_leg_timber_width*2)-(parts_plate_thickness*2);
 

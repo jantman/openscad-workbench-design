@@ -379,7 +379,7 @@ if(show_shelf_supports == true) {
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+parts_shelf_depth,desktop_height+desktop_thickness]){
         rotate([0,0,-90]){
             _shelf_support();
         }
@@ -390,7 +390,7 @@ if(show_shelf_supports == true) {
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+11]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+parts_shelf_depth,desktop_height+desktop_thickness+11]){
         rotate([0,0,-90]){
             _shelf_support();
         }
@@ -401,7 +401,7 @@ if(show_shelf_supports == true) {
             _shelf_support();
         }
     }
-    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+12,desktop_height+desktop_thickness+22]){
+    translate([table_width-leg_timber_width-parts_plate_thickness,center_leg_setback-(center_leg_timber_depth/2)+parts_shelf_depth,desktop_height+desktop_thickness+22]){
         rotate([0,0,-90]){
             _shelf_support();
         }

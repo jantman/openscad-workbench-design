@@ -1,6 +1,8 @@
 module shelf_support(){ // in inches
     include <../config.scad>
     top_screw_height = parts_support_height - (parts_shelf_spacing + (parts_shelf_spacing/2));
+    first_screw_offset = 0.5;
+    second_screw_offset = 10.5;
     difference(){
         union(){
             cube([parts_shelf_depth, parts_plate_thickness, parts_support_height]);
@@ -10,24 +12,25 @@ module shelf_support(){ // in inches
                 }
             }
         }
-        translate([1,0,parts_shelf_spacing/2]){
+        translate([first_screw_offset,0,parts_shelf_spacing+(parts_shelf_thickness/2)]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([11,0,parts_shelf_spacing/2]){
+        translate([second_screw_offset,0,parts_shelf_spacing+(parts_shelf_thickness/2)]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
         }
         if(parts_support_height > 3){
-            translate([1,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+            middle_screw_height = (((parts_support_height/(parts_shelf_thickness+parts_shelf_spacing)) / 2) * (parts_shelf_thickness+parts_shelf_spacing)) - (parts_shelf_thickness / 2);
+            translate([first_screw_offset,0,middle_screw_height]){
                 _screw_hole(parts_plate_thickness, parts_support_depth);
             }
-            translate([11,0,(parts_shelf_spacing/2)+(parts_support_height/2)]){
+            translate([second_screw_offset,0,middle_screw_height]){
                 _screw_hole(parts_plate_thickness, parts_support_depth);
             }
         }
-        translate([1,0,top_screw_height]){
+        translate([first_screw_offset,0,top_screw_height]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
         }
-        translate([11,0,top_screw_height]){
+        translate([second_screw_offset,0,top_screw_height]){
             _screw_hole(parts_plate_thickness, parts_support_depth);
         }
     }
@@ -59,12 +62,21 @@ module _one_shelf_support(){ // in inches
 }
 
 module _screw_hole(parts_plate_thickness, parts_support_depth) {
+    screw_head_padding = 0.02;
+    screw_shaft_diameter = 0.16 + screw_head_padding;
+    screw_head_height = 0.138 + screw_head_padding;
+    screw_head_lower_diameter = 0.16 + screw_head_padding;
+    screw_head_upper_diameter = 0.306 + screw_head_padding;
+
     translate([0,parts_plate_thickness+0.001,0]){
         rotate([90,0,0]){
             union() {
-                cylinder(h=parts_plate_thickness+parts_support_depth+0.002, d=0.16, $fn=48);
-                translate([0,0,(parts_plate_thickness+parts_support_depth)-0.136]){
-                    cylinder(h=0.138, d1=0.16, d2=0.306, $fn=48);
+                cylinder(h=parts_plate_thickness+0.002, d=screw_shaft_diameter, $fn=48);
+                translate([0,0,parts_plate_thickness-screw_head_height]){
+                    cylinder(h=screw_head_height, d1=screw_head_lower_diameter, d2=screw_head_upper_diameter, $fn=48);
+                }
+                translate([0,0,parts_plate_thickness]){
+                    cylinder(h=parts_support_depth, d=screw_head_upper_diameter, $fn=48);
                 }
             }
         }
