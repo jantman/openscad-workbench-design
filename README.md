@@ -46,7 +46,6 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 [![framing_right_rear_lower](renders/framing_right_rear_lower_sm.png)](renders/framing_right_rear_lower.png)'
 
-
 [![assembled_default](renders/assembled_default_sm.png)](renders/assembled_default.png)
 
 [![assembled_front_left](renders/assembled_front_left_sm.png)](renders/assembled_front_left.png)
@@ -88,6 +87,16 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 [![framing_front_lower](renders/framing_front_lower_sm.png)](renders/framing_front_lower.png)
 
 [![framing_right_rear_lower](renders/framing_right_rear_lower_sm.png)](renders/framing_right_rear_lower.png)
+
+### Shelf Supports
+
+[![shelf_support_right](renders/shelf_support_right_sm.png)](renders/shelf_support_right.png)
+
+[![shelf_support_front](renders/shelf_support_front_sm.png)](renders/shelf_support_front.png)
+
+[![shelf_support_back](renders/shelf_support_back_sm.png)](renders/shelf_support_back.png)
+
+[![shelf_support_edge](renders/shelf_support_edge_sm.png)](renders/shelf_support_edge.png)
 
 ## Parts List
 
