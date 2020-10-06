@@ -2,11 +2,6 @@
 
 Openscad designs for my new workbench. This has been _very_ specifically sized to fit certain items.
 
-## ToDo
-
-* Rotate supports for top shelf to give more vertical space?
-* Dimensioned drawing?
-
 ## Rendered Images
 
 [![assembled_default](renders/assembled_default_sm.png)](renders/assembled_default.png)

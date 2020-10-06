@@ -119,33 +119,47 @@ explode([10,6,4], false, show_exploded) {
     color("silver") {
         // Front plate, under desk top
         translate([0,0,desktop_height-strut_timber_height]){
-            long_horizontal_plate(true);
+            long_horizontal_plate(true, false);
         }
 
         // Rear plate, under desk top
         translate([0,table_depth,desktop_height-strut_timber_height]){
             mirror([0,1,0]){
-                long_horizontal_plate(true);
+                long_horizontal_plate(true, false);
             }
         }
 
         // Rear lower plate
         translate([0,table_depth,shelf_height-strut_timber_height]){
             mirror([0,1,0]){
-                long_horizontal_plate(false);
+                long_horizontal_plate(false, false);
             }
         }
 
-        // Rear upper plate, under top shelf
-        translate([0,table_depth,rear_leg_length-strut_timber_height]){
-            mirror([0,1,0]){
-                long_horizontal_plate(false);
+        if(top_shelf_timber_height >= top_shelf_timber_depth){
+            // Rear upper plate, under top shelf
+            translate([0,table_depth,rear_leg_length-strut_timber_height]){
+                mirror([0,1,0]){
+                    long_horizontal_plate(false, true);
+                }
             }
-        }
 
-        // Front upper plate, under top shelf
-        translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-strut_timber_height]){
-            long_horizontal_plate(false);
+            // Front upper plate, under top shelf
+            translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-strut_timber_height]){
+                long_horizontal_plate(false, true);
+            }
+        } else {
+            // Rear upper plate, under top shelf
+            translate([0,table_depth,rear_leg_length-top_shelf_timber_height]){
+                mirror([0,1,0]){
+                    long_horizontal_plate(false, true);
+                }
+            }
+
+            // Front upper plate, under top shelf
+            translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-top_shelf_timber_height]){
+                long_horizontal_plate(false, true);
+            }
         }
     }
     // #### HUTCH SHELF SUPPORTS
@@ -238,12 +252,12 @@ explode([10,6,4], false, show_exploded) {
     // #### TOP SHELF SUPPORTS / TIES ####
     color("SkyBlue") {
         // Right inner top tie
-        translate([(table_width/4)*3,0,rear_leg_length-strut_timber_height]){
+        translate([(table_width/4)*3,0,rear_leg_length-top_shelf_timber_height]){
           upper_side_tie();
         }
 
         // Right outside top tie
-        translate([table_width,0,rear_leg_length-strut_timber_height]){
+        translate([table_width,0,rear_leg_length-top_shelf_timber_height]){
           mirror([0,1,0]){
             rotate([0,0,180]){
               upper_side_tie();
@@ -252,12 +266,12 @@ explode([10,6,4], false, show_exploded) {
         }
 
         // Left outside top tie
-        translate([0,0,rear_leg_length-strut_timber_height]){
+        translate([0,0,rear_leg_length-top_shelf_timber_height]){
           upper_side_tie();
         }
 
         // Left inside top tie
-        translate([(table_width/4),0,rear_leg_length-strut_timber_height]){
+        translate([(table_width/4),0,rear_leg_length-top_shelf_timber_height]){
           mirror([0,1,0]){
             rotate([0,0,180]){
               upper_side_tie();

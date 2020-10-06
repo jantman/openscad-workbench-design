@@ -32,5 +32,5 @@ parts_shelf_width = (table_width/4)-(center_leg_timber_width*2)-(parts_plate_thi
 // Plates
 strut_timber_depth=1.5;
 strut_timber_height=3.5;
-top_shelf_timber_depth=1.5;
-top_shelf_timber_height=3.5;
+top_shelf_timber_depth=3.5;
+top_shelf_timber_height=1.5;

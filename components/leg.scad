@@ -30,11 +30,17 @@ module leg(leg_length,is_center_leg,is_inner_leg,is_left = false)
             }
 
             // rear and center legs only
-            if(leg_length > desktop_height) {
+            if(leg_length > desktop_height && top_shelf_timber_height >= top_shelf_timber_depth) {
               // Upper shelf rabbets for back/middle legs
               translate([0,0,leg_length-top_shelf_timber_height]){
                 cube([top_shelf_timber_depth/2,leg_timber_depth,top_shelf_timber_height],false);
                 cube([leg_timber_width,top_shelf_timber_depth/2,top_shelf_timber_height],false);
+              }
+            }
+            if(leg_length > desktop_height && top_shelf_timber_height < top_shelf_timber_depth) {
+              // Upper shelf rabbets for back/middle legs
+              translate([0,0,leg_length-top_shelf_timber_height]){
+                cube([leg_timber_width,leg_timber_depth,top_shelf_timber_height],false);
               }
             }
 
