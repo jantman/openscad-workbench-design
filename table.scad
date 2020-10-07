@@ -1,7 +1,18 @@
 include <config.scad>
 use <modules/explode.scad>
-use <components/leg.scad>
-use <components/long_horizontal_plate.scad>
+use <components/leg_short_left.scad>
+use <components/leg_short_NOTleft.scad>
+use <components/leg_center_inner_left.scad>
+use <components/leg_NOTcenter_NOTinner_NOTleft.scad>
+use <components/leg_NOTcenter_NOTinner_left.scad>
+use <components/leg_NOTcenter_inner_left.scad>
+use <components/leg_NOTcenter_inner_NOTleft.scad>
+use <components/leg_center_NOTinner_NOTleft.scad>
+use <components/leg_center_NOTinner_left.scad>
+use <components/leg_center_inner_NOTleft.scad>
+use <components/long_horizontal_plate_top.scad>
+use <components/long_horizontal_plate_not_top.scad>
+use <components/long_horizontal_plate_desktop.scad>
 use <components/lower_side_tie.scad>
 use <components/short_horizontal_plate.scad>
 use <components/desktop.scad>
@@ -24,24 +35,24 @@ explode([10,6,4], false, show_exploded) {
     // #### FRONT (SHORT) LEGS ####
     color("NavajoWhite"){
         // Left front outside leg
-        leg(front_leg_length,false,false,true);
+        leg_short_left();
 
         // Left front inside leg
         translate([table_width/4,0,0]){
             mirror([1,0,0]){
-                leg(front_leg_length,false,true,true);
+                leg_short_left();
             }
         }
 
         // Right front inside leg
         translate([(table_width/4)*3,0,0]){
-            leg(front_leg_length,false,true,false);
+            leg_short_NOTleft();
         }
 
         // Right front outside leg
         translate([table_width,0,0]){
             mirror([1,0,0]){
-                leg(front_leg_length,false,false,false);
+                leg_short_NOTleft();
             }
         }
     }
@@ -49,14 +60,14 @@ explode([10,6,4], false, show_exploded) {
     color("BurlyWood"){
         // Left center outside leg
         translate([0,center_leg_setback-center_leg_timber_depth,0]){
-          leg(rear_leg_length,true,false,true);
+          leg_center_NOTinner_left();
         }
 
         // Left rear outside leg
         translate([0,table_depth,0]){
             rotate([0,0,180]){
                 mirror([1,0,0]){
-                    leg(rear_leg_length,false,false,true);
+                    leg_NOTcenter_NOTinner_left();
                 }
             }
         }
@@ -64,27 +75,27 @@ explode([10,6,4], false, show_exploded) {
         // Left center inside leg
         translate([table_width/4,center_leg_setback-center_leg_timber_depth,0]){
             mirror([1,0,0]){
-                leg(rear_leg_length,true,true,true);
+                leg_center_inner_left();
             }
         }
 
         // Left rear inside leg
         translate([table_width/4,table_depth,0]){
             rotate([0,0,180]){
-                    leg(rear_leg_length,false,true,true);
+                    leg_NOTcenter_inner_left();
             }
         }
 
         // Right center inside leg
         translate([(table_width/4)*3,center_leg_setback-center_leg_timber_depth,0]){
-            leg(rear_leg_length,true,true,false);
+            leg_center_inner_NOTleft();
         }
 
         // Right rear inside leg
         translate([(table_width/4)*3,table_depth,0]){
             rotate([0,0,180]){
                 mirror([1,0,0]){
-                    leg(rear_leg_length,false,true,false);
+                    leg_NOTcenter_inner_NOTleft();
                 }
             }
         }
@@ -92,14 +103,14 @@ explode([10,6,4], false, show_exploded) {
         // Right center outside leg
         translate([table_width,center_leg_setback-center_leg_timber_depth,0]){
             mirror([1,0,0]){
-                leg(rear_leg_length,true,false,false);
+                leg_center_NOTinner_NOTleft();
             }
         }
 
         // Right rear outside leg
         translate([table_width,table_depth,0]){
                 rotate([0,0,180]){
-                    leg(rear_leg_length,false,false,false);
+                    leg_NOTcenter_NOTinner_NOTleft();
                 }
         }
     }
@@ -119,20 +130,20 @@ explode([10,6,4], false, show_exploded) {
     color("silver") {
         // Front plate, under desk top
         translate([0,0,desktop_height-strut_timber_height]){
-            long_horizontal_plate(true, false);
+            long_horizontal_plate_desktop();
         }
 
         // Rear plate, under desk top
         translate([0,table_depth,desktop_height-strut_timber_height]){
             mirror([0,1,0]){
-                long_horizontal_plate(true, false);
+                long_horizontal_plate_desktop();
             }
         }
 
         // Rear lower plate
         translate([0,table_depth,shelf_height-strut_timber_height]){
             mirror([0,1,0]){
-                long_horizontal_plate(false, false);
+                long_horizontal_plate_not_top();
             }
         }
 
@@ -140,25 +151,25 @@ explode([10,6,4], false, show_exploded) {
             // Rear upper plate, under top shelf
             translate([0,table_depth,rear_leg_length-strut_timber_height]){
                 mirror([0,1,0]){
-                    long_horizontal_plate(false, true);
+                    long_horizontal_plate_top();
                 }
             }
 
             // Front upper plate, under top shelf
             translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-strut_timber_height]){
-                long_horizontal_plate(false, true);
+                long_horizontal_plate_top();
             }
         } else {
             // Rear upper plate, under top shelf
             translate([0,table_depth,rear_leg_length-top_shelf_timber_height]){
                 mirror([0,1,0]){
-                    long_horizontal_plate(false, true);
+                    long_horizontal_plate_top();
                 }
             }
 
             // Front upper plate, under top shelf
             translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length-top_shelf_timber_height]){
-                long_horizontal_plate(false, true);
+                long_horizontal_plate_top();
             }
         }
     }
