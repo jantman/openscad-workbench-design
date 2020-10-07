@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 . get_deps.sh
 
 OUTPUTSIZE=3840,2160
