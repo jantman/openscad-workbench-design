@@ -1,7 +1,7 @@
 module hutch_shelf()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: hutch_shelf"));
+    echo(str("BOM ITEM: hutch_shelf size=", (table_width/2)+(center_leg_timber_width*2), "x", table_depth-center_leg_setback+center_leg_timber_depth, " thickness=", shelf_thickness));
     render() { // see note in README about rendering
       translate([(table_width/4)-center_leg_timber_width,center_leg_setback-center_leg_timber_depth,hutch_shelf_height+strut_timber_depth]){
         difference() {

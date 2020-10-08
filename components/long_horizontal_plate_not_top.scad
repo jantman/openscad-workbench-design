@@ -1,7 +1,7 @@
 module long_horizontal_plate_not_top()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: long_horizontal_plate_not_top"));
+    echo(str("BOM ITEM: long_horizontal_plate_not_top length=", table_width, " material=", strut_timber_depth, "x", strut_timber_height));
     render() { // see note in README about rendering
         difference() {
             cube([table_width,strut_timber_depth,strut_timber_height],false);

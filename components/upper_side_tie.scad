@@ -1,12 +1,12 @@
 module upper_side_tie()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: upper_side_tie"));
     tie_length = (table_depth-center_leg_setback)+center_leg_timber_depth;
     render() { // see note in README about rendering
         if(top_shelf_timber_height >= top_shelf_timber_depth){
             translate([0,center_leg_setback-center_leg_timber_depth,0]){
                 difference() {
+                    echo(str("BOM ITEM: upper_side_tie length=", tie_length, " material=", strut_timber_depth, "x", strut_timber_height));
                     cube([strut_timber_depth,tie_length,strut_timber_height],false);
 
                     // Left cutout
@@ -30,6 +30,7 @@ module upper_side_tie()
         } else {
             translate([0,center_leg_setback-center_leg_timber_depth,0]){
                 difference() {
+                    echo(str("BOM ITEM: upper_side_tie length=", tie_length, " material=", top_shelf_timber_depth, "x", top_shelf_timber_height));
                     cube([top_shelf_timber_depth,tie_length,top_shelf_timber_height],false);
                     // Left cutout
                     translate([strut_timber_depth/2,tie_length-leg_timber_depth,0])

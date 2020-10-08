@@ -100,16 +100,17 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 ## Parts List
 
-* 5x 2x4x8' - long horizontal struts
-* 10x 2x4x6' - 8x rear and center legs; 2x hutch shelf supports
+* 5x 2x4x8' - long horizontal plates
+* 8x 2x4x6' - rear and center legs
+* 2x 2x4x51" - hutch shelf supports
 * 4x 2x4x31" - front legs
-* 2x 2x4x2' - Lower front side horizontal struts
-* 11x 2x4x3' - Depth-wise horizontal supports
-* 4x 2x4x1' - Upper shelf supports
-* 1x 8'x3' 3/4" MDF - desktop
-* 1x 6'x1' 1/2" MDF - hutch shelf
-* 1x 8'x1' 1/2" MDF - upper shelf
+* 4x 2x4x15.5" - Upper shelf supports
+* 2x 2x4x2' - Lower front side short horizontal plates
+* 11x 2x4x3' - Depth-wise horizontal supports (3x desktop supports, 8x lower side ties)
 * 2x 2'x3' 1/2" MDF - lower shelves
+* 1x 51"x15.5" 1/2" MDF - hutch shelf
+* 1x 8'x3' 3/4" MDF - desktop
+* 1x 8'x15.5" 1/2" MDF - top shelf
 * 1x 23"x24" 1/4" MDF or plywood - left side shelf under desktop
 * 1x 4'x8' pegboard, such as [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722)
 * approx. 11x 12"x20.5" shelves made from [1/8" MDF](https://www.homedepot.com/p/Hardboard-Tempered-Panel-Common-1-8-in-4-ft-x-8-ft-Actual-0-115-in-x-47-7-in-x-95-7-in-832777/202189720) or [1/4" MDF](https://www.homedepot.com/p/Medium-Density-Fiberboard-Common-1-4-in-x-2-ft-x-4-ft-Actual-0-216-in-x-23-75-in-x-47-75-in-1508104/202089069) (a 4x8 sheet will make 14 shelves)

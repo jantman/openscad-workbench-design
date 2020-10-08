@@ -1,7 +1,7 @@
 module lower_shelf()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: lower_shelf"));
+    echo(str("BOM ITEM: lower_shelf size=", table_width/4, "x", table_depth, " thickness=", shelf_thickness));
     translate([0,0,shelf_height]){
         render() { // see note in README about rendering
             difference() {

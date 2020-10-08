@@ -1,7 +1,7 @@
 module desktop_support()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: desktop_support"));
+    echo(str("BOM ITEM: desktop_support length=", table_depth, " material=", strut_timber_depth, "x", strut_timber_height));
     render() { // see note in README about rendering
         difference() {
             cube([strut_timber_depth,table_depth,strut_timber_height],false);

@@ -1,7 +1,7 @@
 module long_horizontal_plate_top()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: long_horizontal_plate_top"));
+    echo(str("BOM ITEM: long_horizontal_plate_top length=", table_width, " material=", top_shelf_timber_depth, "x", top_shelf_timber_height));
     render() { // see note in README about rendering
         difference() {
             cube([table_width,top_shelf_timber_depth,top_shelf_timber_height],false);

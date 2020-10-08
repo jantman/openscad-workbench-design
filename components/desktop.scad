@@ -1,6 +1,6 @@
 module desktop()
 {
-    echo(str("BOM ITEM: desktop"));
+    echo(str("BOM ITEM: desktop width=", table_width, " depth=", table_depth, " thickness=", desktop_thickness));
     include <../config.scad>
     translate([0,0,desktop_height]){
         render() { // see note in README about rendering

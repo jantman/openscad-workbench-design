@@ -1,8 +1,8 @@
 module short_horizontal_plate()
 {
     include <../config.scad>
-    echo(str("BOM ITEM: short_horizontal_plate"));
     plate_length = table_width / 4;
+    echo(str("BOM ITEM: short_horizontal_plate length=", plate_length, " material=", strut_timber_depth, "x", strut_timber_height));
     render() { // see note in README about rendering
         difference() {
             cube([plate_length,strut_timber_depth,strut_timber_height],false);

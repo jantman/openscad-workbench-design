@@ -302,6 +302,7 @@ explode([10,6,4], false, show_exploded) {
             }
             // top shelf
             translate([0,center_leg_setback-center_leg_timber_depth,rear_leg_length]) {
+                echo(str("BOM ITEM: top_shelf size=", table_width, "x", (table_depth-center_leg_setback)+center_leg_timber_depth, " thickness=", shelf_thickness));
                 cube([table_width,(table_depth-center_leg_setback)+center_leg_timber_depth,shelf_thickness],false);
             }
 
@@ -310,6 +311,7 @@ explode([10,6,4], false, show_exploded) {
 
             // lower left shelf
             translate([leg_timber_width/2,0,left_lower_shelf_height]){
+              echo(str("BOM ITEM: lower_left_shelf size=", 23, "x", 24, " thickness=", left_lower_shelf_thickness));
                 cube([23,24,left_lower_shelf_thickness]);
             }
 

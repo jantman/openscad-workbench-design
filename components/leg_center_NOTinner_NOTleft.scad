@@ -2,7 +2,7 @@ module leg_center_NOTinner_NOTleft()
 {
     include <../config.scad>
     leg_length = rear_leg_length;
-    echo(str("BOM ITEM: leg_center_NOTinner_NOTleft"));
+    echo(str("BOM ITEM: leg_center_NOTinner_NOTleft length=", leg_length, " material=", leg_timber_width, "x", leg_timber_depth));
     render() { // see note in README about rendering
         difference() {
             cube([leg_timber_width,leg_timber_depth,leg_length],false);
