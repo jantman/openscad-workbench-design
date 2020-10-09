@@ -1,24 +1,24 @@
-      1 ECHO: "BOM ITEM: desktop width=96 depth=36 thickness=0.75"
-      1 ECHO: "BOM ITEM: hutch_shelf size=51x15.5 thickness=0.5"
-      1 ECHO: "BOM ITEM: leg_NOTcenter_NOTinner_NOTleft length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_NOTcenter_NOTinner_left length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_NOTcenter_inner_NOTleft length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_NOTcenter_inner_left length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_center_NOTinner_NOTleft length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_center_NOTinner_left length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_center_inner_NOTleft length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: leg_center_inner_left length=72 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: long_horizontal_plate_not_top length=96 material=1.5x3.5"
-      1 ECHO: "BOM ITEM: lower_left_shelf size=23x24 thickness=0.25"
-      1 ECHO: "BOM ITEM: top_shelf size=96x15.5 thickness=0.5"
-      2 ECHO: "BOM ITEM: hutch_shelf_support length=51 material=3.5x1.5"
-      2 ECHO: "BOM ITEM: leg_short_NOTleft length=31 material=1.5x3.5"
-      2 ECHO: "BOM ITEM: leg_short_left length=31 material=1.5x3.5"
-      2 ECHO: "BOM ITEM: long_horizontal_plate_desktop length=96 material=1.5x3.5"
-      2 ECHO: "BOM ITEM: long_horizontal_plate_top length=96 material=3.5x1.5"
-      2 ECHO: "BOM ITEM: lower_shelf size=24x36 thickness=0.5"
-      2 ECHO: "BOM ITEM: short_horizontal_plate length=24 material=1.5x3.5"
-      3 ECHO: "BOM ITEM: desktop_support length=36 material=1.5x3.5"
-      4 ECHO: "BOM ITEM: upper_side_tie length=15.5 material=3.5x1.5"
-      6 ECHO: "BOM ITEM: shelf_support"
-      8 ECHO: "BOM ITEM: lower_side_tie length=36 material=1.5x3.5"
+1x desktop (width=96 depth=36 thickness=0.75)
+3x desktop_support (length=36 material=1.5x3.5)
+1x hutch_shelf (size=51x15.5 thickness=0.5)
+2x hutch_shelf_support (length=51 material=3.5x1.5)
+1x leg_NOTcenter_NOTinner_NOTleft (length=72 material=1.5x3.5)
+1x leg_NOTcenter_NOTinner_left (length=72 material=1.5x3.5)
+1x leg_NOTcenter_inner_NOTleft (length=72 material=1.5x3.5)
+1x leg_NOTcenter_inner_left (length=72 material=1.5x3.5)
+1x leg_center_NOTinner_NOTleft (length=72 material=1.5x3.5)
+1x leg_center_NOTinner_left (length=72 material=1.5x3.5)
+1x leg_center_inner_NOTleft (length=72 material=1.5x3.5)
+1x leg_center_inner_left (length=72 material=1.5x3.5)
+2x leg_short_NOTleft (length=31 material=1.5x3.5)
+2x leg_short_left (length=31 material=1.5x3.5)
+2x long_horizontal_plate_desktop (length=96 material=1.5x3.5)
+1x long_horizontal_plate_not_top (length=96 material=1.5x3.5)
+2x long_horizontal_plate_top (length=96 material=3.5x1.5)
+1x lower_left_shelf (size=23x24 thickness=0.25)
+2x lower_shelf (size=24x36 thickness=0.5)
+8x lower_side_tie (length=36 material=1.5x3.5)
+6x shelf_support
+2x short_horizontal_plate (length=24 material=1.5x3.5)
+1x top_shelf (size=96x15.5 thickness=0.5)
+4x upper_side_tie (length=15.5 material=3.5x1.5)

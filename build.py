@@ -20,13 +20,15 @@ import argparse
 import logging
 from glob import glob
 from textwrap import dedent
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import subprocess
 import re
+import json
+from datetime import datetime
 
 from lxml import etree
 from wand.image import Image as WandImage
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 FORMAT = "[%(asctime)s %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.WARNING, format=FORMAT)
@@ -38,11 +40,31 @@ TOPDIR: str = os.path.dirname(os.path.abspath(__file__))
 #: Directory for the individual component files
 COMPONENT_DIR: str = os.path.join(TOPDIR, 'individual_components')
 
-#: Intermediate (per-view) image width
-INTER_IMG_WIDTH: int = 1024
+#: Cache of the BoM
+BOM_CACHE: str = os.path.join(COMPONENT_DIR, 'bom.json')
 
-#: Intermediate (per-view) image height
-INTER_IMG_HEIGHT: int = 768
+#: Final built BoM
+BOM_FILE: str = os.path.join(TOPDIR, 'BOM.txt')
+
+#: Font size to use on images
+FONT_SIZE: int = 24
+
+#: Font to use on images
+FONT: ImageFont = ImageFont.truetype('modules/DejaVuSans.ttf', size=FONT_SIZE)
+
+#: Height of an example string in the chosen font
+FONT_HEIGHT: int = FONT.getsize('Some Example text 123')[1]
+
+#: Font size to use in the footer
+FOOTER_FONT_SIZE: int = 24
+
+#: Font to use in the footer
+FOOTER_FONT: ImageFont = ImageFont.truetype(
+    'modules/DejaVuSans.ttf', size=FOOTER_FONT_SIZE
+)
+
+#: Height of an example string in the chosen footer font
+FOOTER_FONT_HEIGHT: int = FOOTER_FONT.getsize('Some Example text 123')[1]
 
 
 def run_command(cmd: List[str], shell: bool = False):
@@ -63,44 +85,110 @@ def run_command(cmd: List[str], shell: bool = False):
         'Process "%s" exited %d:\n%s', ' '.join(cmd), p.returncode,
         p.stdout.decode()
     )
+    return p.stdout.decode()
+
+
+def git_version():
+    ver = subprocess.run(
+        ['git', 'rev-parse', '--short', 'HEAD'], stdout=subprocess.PIPE,
+        cwd=TOPDIR
+    ).stdout.decode().strip()
+    dirtyA = subprocess.run(
+        ['git', 'diff', '--no-ext-diff', '--quiet', '--exit-code'],
+        cwd=TOPDIR, check=False
+    )
+    dirtyB = subprocess.run(
+        ['git', 'diff-index', '--cached', '--quiet', 'HEAD', '--'],
+        cwd=TOPDIR, check=False
+    )
+    if dirtyA.returncode != 0 or dirtyB.returncode != 0:
+        ver += ' (dirty)'
+    return ver
 
 
 class Component:
+    """
+    Note: The dimensions here are intended for 8.5x11" paper (US Letter)
+    on a 600dpi printer that can print to 8.33x10.83 inches, or a full
+    image size of 4998 x 6498 pixels.
+    """
 
-    def __init__(self, fpath: str, module_name: str):
+    #: Intermediate (per-view) image width
+    INTER_IMG_WIDTH: int = 1024
+
+    #: Intermediate (per-view) image height
+    INTER_IMG_HEIGHT: int = 768
+
+    #: X/height padding inside per-view boxes
+    IMG_X_PADDING: int = 20
+
+    #: Y/width padding inside per-view boxes
+    IMG_Y_PADDING: int = 20
+
+    #: Estimated height of the per-view text at the top of each image
+    IMG_TITLE_HEIGHT: int = int(FONT_HEIGHT * 1.5)
+
+    #: Width of the per-image box
+    IMG_BOX_WIDTH = INTER_IMG_WIDTH + (IMG_Y_PADDING * 2)
+
+    #: Height of the per-image box
+    IMG_BOX_HEIGHT = INTER_IMG_HEIGHT + (IMG_X_PADDING * 2) + IMG_TITLE_HEIGHT
+
+    #: Height of the footer at the bottom of the page
+    FOOTER_HEIGHT = FOOTER_FONT_HEIGHT * 2
+
+    def __init__(
+        self, fpath: str, module_name: str, bom_quantity: int,
+        bom_extra_info: Optional[str], do_cleanup: bool = True
+    ):
         self.fpath: str = fpath
         self.module_name: str = module_name
-        self.scadpath = os.path.join(
-            'individual_components', f'{self.module_name}.scad'
+        self.bom_quantity: int = bom_quantity
+        self.bom_extra_info: Optional[str] = bom_extra_info
+        self._do_cleanup = do_cleanup
+        logger.info(
+            'Component: %s (in %s); cleanup=%s', self.module_name, self.fpath,
+            self._do_cleanup
         )
-        logger.info('Component: %s (in %s)', self.module_name, self.fpath)
 
     def build(self):
         self._build_svgs()
 
     def _build_svgs(self):
         logger.debug('Create new empty image')
+        overall_x = self.IMG_BOX_WIDTH * 2
+        overall_y = (self.IMG_BOX_HEIGHT * 3) + self.FOOTER_HEIGHT
         img = Image.new(
-            size=(INTER_IMG_WIDTH*2, INTER_IMG_HEIGHT*3), mode='RGB',
-            color=(255, 255, 255)
+            size=(overall_x, overall_y), mode='RGB', color=(255, 255, 255)
         )
-        x = 0
         y = 0
-        for view in ['top', 'bottom', 'left', 'right', 'back', 'front']:
+        for view_pair in [
+            ['top', 'bottom'], ['left', 'right'], ['back', 'front']
+        ]:
+            view = view_pair[0]
             logger.debug('Building view: %s', view)
             svgpath = self._build_one_svg(view)
             logger.debug('SVG path: %s', svgpath)
-            pngpath = self._svg_to_png(view, svgpath)
-            logger.debug('PNG path: %s', pngpath)
-            logger.debug('Add %s view to combined image', view)
-            part = Image.open(pngpath)
-            img.paste(part, (x, y))
-            part = None
-            if x == 0:
-                x = INTER_IMG_WIDTH
-            else:
-                x = 0
-                y += INTER_IMG_HEIGHT
+            pngpath = self._add_view_to_image(img, svgpath, view, 0, y)
+            if self._do_cleanup:
+                logger.debug('Cleanup: %s', svgpath)
+                os.unlink(svgpath)
+                logger.debug('Cleanup: %s', pngpath)
+                os.unlink(pngpath)
+            view = view_pair[1]
+            logger.debug('Building view: %s', view)
+            svgpath = self._build_one_svg(view)
+            logger.debug('SVG path: %s', svgpath)
+            pngpath = self._add_view_to_image(
+                img, svgpath, view, self.IMG_BOX_WIDTH+1, y
+            )
+            y += self.IMG_BOX_HEIGHT
+            if self._do_cleanup:
+                logger.debug('Cleanup: %s', svgpath)
+                os.unlink(svgpath)
+                logger.debug('Cleanup: %s', pngpath)
+                os.unklink(pngpath)
+        self._add_footer_to_image(img, 0, y, overall_x)
         fpath = os.path.join(
             COMPONENT_DIR, f'{self.module_name}.png'
         )
@@ -109,11 +197,95 @@ class Component:
             img.save(fh)
         logger.info('Wrote combined image to: %s', fpath)
 
-    def _svg_to_png(self, view: str, svgpath: str) -> str:
-        self._resize_svg(svgpath)
+    def _add_footer_to_image(self, img: Image, x: int, y: int, width: int):
+        logger.debug(
+            'Using footer font with size %s; example text height: %s',
+            FONT_SIZE, FONT_HEIGHT
+        )
+        draw: ImageDraw = ImageDraw.Draw(img)
+        box_coords = [(x, y), (width, y + self.FOOTER_HEIGHT)]
+        logger.debug('Drawing rectangle: %s', box_coords)
+        draw.rectangle(box_coords, outline="black", width=4)
+        left_text = f'{self.module_name} >>> QTY: {self.bom_quantity} <<<'
+        if self.bom_extra_info is not None:
+            left_text += f' ({self.bom_extra_info})'
+        left_text_size = FOOTER_FONT.getsize(left_text)
+        left_text_coords = (
+            10,
+            y + ((self.FOOTER_HEIGHT / 2) - (left_text_size[1] / 2))
+        )
+        logger.debug('Drawing left footer text at: %s', left_text_coords)
+        draw.text(left_text_coords, left_text, (0, 0, 0), font=FOOTER_FONT)
+        right_text = datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S'
+        ) + '  ' + git_version()
+        right_text_size = FOOTER_FONT.getsize(right_text)
+        right_text_coords = (
+            width - right_text_size[0] - 10,
+            y + ((self.FOOTER_HEIGHT / 2) - (right_text_size[1] / 2))
+        )
+        logger.debug('Drawing right footer text at: %s', right_text_coords)
+        draw.text(right_text_coords, right_text, (0, 0, 0), font=FOOTER_FONT)
+
+    def _add_view_to_image(
+        self, img: Image, svgpath: str, view: str, x: int, y: int
+    ) -> str:
+        pngpath, width, height = self._svg_to_png(view, svgpath)
+        draw: ImageDraw = ImageDraw.Draw(img)
+        box_coords = [
+            (x, y),
+            (x + self.IMG_BOX_WIDTH - 2, y + self.IMG_BOX_HEIGHT)
+        ]
+        logger.debug('Drawing rectangle: %s', box_coords)
+        draw.rectangle(box_coords, outline="black")
+        text_size = FONT.getsize(view)
+        text_coords = (
+            x + ((self.IMG_BOX_WIDTH / 2) - (text_size[0] / 2)),
+            y + (text_size[1] / 2)
+        )
+        logger.debug('Drawing text at: %s', text_coords)
+        draw.text(text_coords, view, (0, 0, 0), font=FONT)
+        logger.debug('PNG path: %s', pngpath)
+        part = Image.open(pngpath)
+        logger.debug('Add %s view to combined image', view)
+        img.paste(
+            part, self._center_image_in_box(
+                x + self.IMG_X_PADDING,
+                y + self.IMG_Y_PADDING + self.IMG_TITLE_HEIGHT,
+                width, height
+            )
+        )
+        return pngpath
+
+    def _center_image_in_box(
+        self, x: int, y: int, width: int, height: int
+    ) -> Tuple[int, int]:
+        if width == self.INTER_IMG_WIDTH:
+            finalx = x
+        else:
+            finalx = x + ((self.INTER_IMG_WIDTH - width) / 2)
+        if height == self.INTER_IMG_HEIGHT:
+            finaly = y
+        else:
+            finaly = y + ((self.INTER_IMG_HEIGHT - height) / 2)
+        finalx = int(finalx)
+        finaly = int(finaly)
+        logger.debug(
+            'Centering %s x %s image in box with top-left at (%s, %s). '
+            'Image top left: (%s, %s)', width, height, x, y, finalx, finaly
+        )
+        return finalx, finaly
+
+    def _svg_to_png(self, view: str, svgpath: str) -> Tuple[str, int, int]:
         pngpath = os.path.join(
             COMPONENT_DIR, f'{self.module_name}_{view}.png'
         )
+        if os.path.exists(pngpath):
+            logger.debug('Already exists: %s', pngpath)
+            with WandImage(filename=svgpath) as img:
+                width, height = img.size
+            return pngpath, width, height
+        self._resize_svg(svgpath)
         logger.debug('Loading image: %s', svgpath)
         with WandImage(filename=svgpath) as img:
             width, height = img.size
@@ -123,7 +295,7 @@ class Component:
             )
             logger.debug('Writing to: %s', pngpath)
             img.save(filename=pngpath)
-        return pngpath
+        return pngpath, width, height
 
     def _resize_svg(self, svgpath: str):
         """
@@ -204,21 +376,24 @@ class Component:
 
     def _png_size(self, width: int, height: int) -> List[int]:
         if width > height:
-            mult = INTER_IMG_WIDTH / width
+            mult = self.INTER_IMG_WIDTH / width
         else:
-            mult = INTER_IMG_HEIGHT / height
+            mult = self.INTER_IMG_HEIGHT / height
         return [int(width * mult), int(height * mult)]
 
     def _build_one_svg(self, view: str) -> str:
-        if os.path.exists(self.scadpath):
-            logger.debug('%s already exists; not writing', self.scadpath)
+        scadpath = os.path.join(
+            'individual_components', f'{self.module_name}_{view}.scad'
+        )
+        if os.path.exists(scadpath):
+            logger.debug('%s already exists; not writing', scadpath)
         else:
             logger.debug(
-                'Writing SCAD file for view %s to: %s', view, self.scadpath
+                'Writing SCAD file for view %s to: %s', view, scadpath
             )
-            with open(self.scadpath, 'w') as fh:
+            with open(scadpath, 'w') as fh:
                 fh.write(self.scad_file(view))
-            logger.info('Wrote SCAD file to: %s', self.scadpath)
+            logger.info('Wrote SCAD file to: %s', scadpath)
         svgpath = os.path.join(
             COMPONENT_DIR, f'{self.module_name}_{view}.svg'
         )
@@ -226,8 +401,11 @@ class Component:
             logger.debug('Already exists: %s', svgpath)
             return svgpath
         logger.info('Writing %s view SVG', view)
-        cmd = ['openscad', '-o', svgpath, self.scadpath]
+        cmd = ['openscad', '-o', svgpath, scadpath]
         run_command(cmd)
+        if self._do_cleanup:
+            logger.debug('Cleanup: %s', scadpath)
+            os.unlink(scadpath)
         return svgpath
 
     def scad_file(self, view_mode):
@@ -240,18 +418,61 @@ class Component:
 
 class WorkbenchBuilder:
 
-    def __init__(self):
-        pass
-
-    def run(self):
-        logger.info('Building components...')
-        self.build_components()
-        logger.info('Done building components')
-
-    def build_components(self):
+    def __init__(self, do_cleanup=True):
+        self.do_cleanup = do_cleanup
         if not os.path.exists(COMPONENT_DIR):
             logger.info('Creating directory: %s', COMPONENT_DIR)
             os.makedirs(COMPONENT_DIR)
+
+    def run(self):
+        logger.debug(
+            'Using font with size %s; example text height: %s', FONT_SIZE,
+            FONT_HEIGHT
+        )
+        if os.path.exists(BOM_CACHE):
+            logger.debug('Loading BoM from cache: %s', BOM_CACHE)
+            with open(BOM_CACHE, 'r') as fh:
+                bom: dict = json.load(fh)
+        else:
+            logger.info('Getting BOM from openscad...')
+            bom: dict = self._get_bom()
+        logger.info('Building components...')
+        self.build_components(bom)
+        logger.info('Done building components')
+
+    def _get_bom(self) -> dict:
+        line_re = re.compile(
+            r'^ECHO: "BOM ITEM: ([^\s]+)\s?(.*)?"$'
+        )
+        result = {}
+        cmd = ['openscad', '-o', 'foo.stl', 'table.scad']
+        lines = run_command(cmd).split('\n')
+        os.unlink('foo.stl')
+        for line in lines:
+            line = line.strip()
+            m = line_re.match(line)
+            if not m:
+                continue
+            modname, extra = m.groups()
+            if extra == '':
+                extra = None
+            if modname not in result:
+                result[modname] = {'count': 0, 'extra': extra}
+            result[modname]['count'] += 1
+        logger.debug('BoM items: %s', result)
+        logger.debug('Writing %s', BOM_CACHE)
+        with open(BOM_CACHE, 'w') as fh:
+            fh.write(json.dumps(dict(result), sort_keys=True, indent=4))
+        logger.debug('Writing %s', BOM_FILE)
+        with open(BOM_FILE, 'w') as fh:
+            for k in sorted(result.keys()):
+                fh.write(f'{result[k]["count"]}x {k}')
+                if result[k]['extra'] is not None:
+                    fh.write(' (' + result[k]['extra'] + ')')
+                fh.write('\n')
+        return dict(result)
+
+    def build_components(self, bom: dict):
         logger.debug('Finding components')
         for fpath in glob(os.path.join(TOPDIR, 'components', '*.scad')):
             component = os.path.basename(fpath).replace('.scad', '')
@@ -259,9 +480,15 @@ class WorkbenchBuilder:
                 logger.debug('Skipping component %s in %s', component, fpath)
                 continue
             logger.debug('Found component %s in %s', component, fpath)
+            # DEBUG
             if component != 'hutch_shelf_support':
                 continue
-            Component(fpath, component).build()
+            qty = bom[component]['count']
+            extra_info = bom[component]['extra']
+            # END DEBUG
+            Component(
+                fpath, component, qty, extra_info, do_cleanup=self.do_cleanup
+            ).build()
 
 
 def parse_args(argv):
@@ -270,6 +497,12 @@ def parse_args(argv):
     )
     p.add_argument('-v', '--verbose', dest='verbose', action='store_true',
                    default=False, help='debug-level output.')
+    p.add_argument(
+        '-C', '--no-cleanup', dest='cleanup', action='store_false',
+        default=True,
+        help='Do not clean up intermediate files. Also do not regenerate them '
+             'unless manually removed.'
+    )
     args = p.parse_args(argv)
     return args
 
@@ -311,4 +544,4 @@ if __name__ == "__main__":
         set_log_debug()
     else:
         set_log_info()
-    WorkbenchBuilder().run()
+    WorkbenchBuilder(do_cleanup=args.cleanup).run()
