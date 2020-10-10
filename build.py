@@ -450,6 +450,8 @@ class WorkbenchBuilder:
             'Using font with size %s; example text height: %s', FONT_SIZE,
             FONT_HEIGHT
         )
+        # yeah, this is a total cop-out...
+        run_command(['bash', 'build.sh'])
         if os.path.exists(BOM_CACHE):
             logger.debug('Loading BoM from cache: %s', BOM_CACHE)
             with open(BOM_CACHE, 'r') as fh:
