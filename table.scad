@@ -298,7 +298,9 @@ explode([10,6,4], false, show_exploded) {
 
     if(show_surfaces == true) {
         color(desktop_shelf_color) {
-            desktop();
+            translate([0,0,desktop_height]){
+                desktop();
+            }
             // left lower shelf
             translate([0,0,shelf_height]){
                 lower_shelf();
