@@ -1,3 +1,4 @@
+11x adjustable_shelf (width=20.6 depth=11.5 thickness=0.35)
 1x desktop (width=96 depth=36 thickness=0.75)
 3x desktop_support (length=36 material=1.5x3.5)
 1x hutch_shelf (size=51x15.5 thickness=0.5)
