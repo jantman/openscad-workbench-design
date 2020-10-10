@@ -320,36 +320,47 @@ explode([10,6,4], false, show_exploded) {
             adj_shelf_x = ((table_width/4)*3)+leg_timber_width+parts_plate_thickness;
             adj_shelf_y = center_leg_setback-(center_leg_timber_depth/2);
             adj_shelf_base_z = desktop_height+desktop_thickness;
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*2)+(parts_shelf_spacing*3)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*5)+(parts_shelf_spacing*6)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*9)+(parts_shelf_spacing*10)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*13)+(parts_shelf_spacing*14)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*23)+(parts_shelf_spacing*24)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*33)+(parts_shelf_spacing*34)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*43)+(parts_shelf_spacing*44)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*53)+(parts_shelf_spacing*54)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*57)+(parts_shelf_spacing*58)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*61)+(parts_shelf_spacing*62)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }
+            echo(str("BOM ITEM: adjustable_shelf width=", parts_shelf_width, " depth=", parts_shelf_depth, " thickness=", parts_shelf_thickness));
             translate([adj_shelf_x,adj_shelf_y,adj_shelf_base_z+(parts_shelf_thickness*65)+(parts_shelf_spacing*66)]){
                 cube([parts_shelf_width,parts_shelf_depth,parts_shelf_thickness]);
             }

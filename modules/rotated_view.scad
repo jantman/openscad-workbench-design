@@ -20,7 +20,7 @@ module rotated_view(view_mode = "") {
                     children();
                 }
             } else if(view_mode == "back"){
-                rotate([180,0,0]){
+                rotate([0,180,0]){
                     children();
                 }
             } else { // mode == "front"
