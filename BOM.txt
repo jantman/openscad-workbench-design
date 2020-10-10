@@ -22,4 +22,5 @@
 6x shelf_support
 2x short_horizontal_plate (length=24 material=1.5x3.5)
 1x top_shelf (size=96x15.5 thickness=0.5)
-4x upper_side_tie (length=15.5 material=3.5x1.5)
+2x upper_side_tieA (length=15.5 material=3.5x1.5)
+2x upper_side_tieB (length=15.5 material=3.5x1.5)

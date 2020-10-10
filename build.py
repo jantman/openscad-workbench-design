@@ -47,7 +47,7 @@ BOM_CACHE: str = os.path.join(COMPONENT_DIR, 'bom.json')
 BOM_FILE: str = os.path.join(TOPDIR, 'BOM.txt')
 
 #: Font size to use on images
-FONT_SIZE: int = 24
+FONT_SIZE: int = 120
 
 #: Font to use on images
 FONT: ImageFont = ImageFont.truetype('modules/DejaVuSans.ttf', size=FONT_SIZE)
@@ -56,7 +56,7 @@ FONT: ImageFont = ImageFont.truetype('modules/DejaVuSans.ttf', size=FONT_SIZE)
 FONT_HEIGHT: int = FONT.getsize('Some Example text 123')[1]
 
 #: Font size to use in the footer
-FOOTER_FONT_SIZE: int = 24
+FOOTER_FONT_SIZE: int = 72
 
 #: Font to use in the footer
 FOOTER_FONT: ImageFont = ImageFont.truetype(
@@ -113,29 +113,37 @@ class Component:
     image size of 4998 x 6498 pixels.
     """
 
-    #: Intermediate (per-view) image width
-    INTER_IMG_WIDTH: int = 1024
+    #: Target final image width. This is based on printing at 600dpi on a
+    #: printer that prints 8.33 inches wide on 8.5x11 (US Letter) paper.
+    PAGE_WIDTH: int = 4998
 
-    #: Intermediate (per-view) image height
-    INTER_IMG_HEIGHT: int = 768
+    #: Target final image height. This is based on printing at 600dpi on a
+    #: printer that prints 10.83 inches high on 8.5x11 (US Letter) paper.
+    PAGE_HEIGHT: int = 6498
 
-    #: X/height padding inside per-view boxes
-    IMG_X_PADDING: int = 20
+    #: Height of the footer at the bottom of the page
+    FOOTER_HEIGHT: int = FOOTER_FONT_HEIGHT * 2
 
-    #: Y/width padding inside per-view boxes
-    IMG_Y_PADDING: int = 20
+    #: Width of the per-image box
+    IMG_BOX_WIDTH: int = int((PAGE_WIDTH - 4) / 2)
+
+    #: Height of the per-image box
+    IMG_BOX_HEIGHT: int = int((PAGE_HEIGHT - FOOTER_HEIGHT - 8) / 3)
 
     #: Estimated height of the per-view text at the top of each image
     IMG_TITLE_HEIGHT: int = int(FONT_HEIGHT * 1.5)
 
-    #: Width of the per-image box
-    IMG_BOX_WIDTH = INTER_IMG_WIDTH + (IMG_Y_PADDING * 2)
+    #: X/height padding inside per-view boxes
+    IMG_X_PADDING: int = int(IMG_BOX_WIDTH / 4)
 
-    #: Height of the per-image box
-    IMG_BOX_HEIGHT = INTER_IMG_HEIGHT + (IMG_X_PADDING * 2) + IMG_TITLE_HEIGHT
+    #: Y/width padding inside per-view boxes
+    IMG_Y_PADDING: int = int((IMG_BOX_HEIGHT - IMG_TITLE_HEIGHT) / 4)
 
-    #: Height of the footer at the bottom of the page
-    FOOTER_HEIGHT = FOOTER_FONT_HEIGHT * 2
+    #: Intermediate (per-view) image width
+    INTER_IMG_WIDTH: int = int(IMG_BOX_WIDTH / 2)
+
+    #: Intermediate (per-view) image height
+    INTER_IMG_HEIGHT: int = int((IMG_BOX_HEIGHT - IMG_TITLE_HEIGHT) / 2)
 
     def __init__(
         self, fpath: str, module_name: str, bom_quantity: int,
@@ -150,11 +158,27 @@ class Component:
             'Component: %s (in %s); cleanup=%s', self.module_name, self.fpath,
             self._do_cleanup
         )
+        logger.info(
+            'Dimensions: PAGE_WIDTH=%s PAGE_HEIGHT=%s FOOTER_HEIGHT=%s '
+            'IMG_BOX_WIDTH=%s IMG_BOX_HEIGHT=%s INTER_IMG_WIDTH=%s '
+            'INTER_IMG_HEIGHT=%s IMG_X_PADDING=%s IMG_Y_PADDING=%s '
+            'IMG_TITLE_HEIGHT=%s',
+            self.PAGE_WIDTH, self.PAGE_HEIGHT, self.FOOTER_HEIGHT,
+            self.IMG_BOX_WIDTH, self.IMG_BOX_HEIGHT, self.INTER_IMG_WIDTH,
+            self.INTER_IMG_HEIGHT, self.IMG_X_PADDING, self.IMG_Y_PADDING,
+            self.IMG_TITLE_HEIGHT
+        )
 
     def build(self):
         self._build_svgs()
 
     def _build_svgs(self):
+        fpath = os.path.join(
+            COMPONENT_DIR, f'{self.module_name}.png'
+        )
+        if os.path.exists(fpath):
+            logger.info('Already exists: %s', fpath)
+            return
         logger.debug('Create new empty image')
         overall_x = self.IMG_BOX_WIDTH * 2
         overall_y = (self.IMG_BOX_HEIGHT * 3) + self.FOOTER_HEIGHT
@@ -187,11 +211,8 @@ class Component:
                 logger.debug('Cleanup: %s', svgpath)
                 os.unlink(svgpath)
                 logger.debug('Cleanup: %s', pngpath)
-                os.unklink(pngpath)
+                os.unlink(pngpath)
         self._add_footer_to_image(img, 0, y, overall_x)
-        fpath = os.path.join(
-            COMPONENT_DIR, f'{self.module_name}.png'
-        )
         logger.debug('Writing combined image to: %s', fpath)
         with open(fpath, 'wb') as fh:
             img.save(fh)
@@ -206,7 +227,7 @@ class Component:
         box_coords = [(x, y), (width, y + self.FOOTER_HEIGHT)]
         logger.debug('Drawing rectangle: %s', box_coords)
         draw.rectangle(box_coords, outline="black", width=4)
-        left_text = f'{self.module_name} >>> QTY: {self.bom_quantity} <<<'
+        left_text = f'{self.module_name} > QTY: {self.bom_quantity} <'
         if self.bom_extra_info is not None:
             left_text += f' ({self.bom_extra_info})'
         left_text_size = FOOTER_FONT.getsize(left_text)
@@ -474,18 +495,14 @@ class WorkbenchBuilder:
 
     def build_components(self, bom: dict):
         logger.debug('Finding components')
-        for fpath in glob(os.path.join(TOPDIR, 'components', '*.scad')):
+        for fpath in sorted(glob(os.path.join(TOPDIR, 'components', '*.scad'))):
             component = os.path.basename(fpath).replace('.scad', '')
-            if component in ['pegboard', 'shelf_support']:
+            if component in ['pegboard', 'shelf_support', 'printer']:
                 logger.debug('Skipping component %s in %s', component, fpath)
                 continue
             logger.debug('Found component %s in %s', component, fpath)
-            # DEBUG
-            if component != 'hutch_shelf_support':
-                continue
             qty = bom[component]['count']
             extra_info = bom[component]['extra']
-            # END DEBUG
             Component(
                 fpath, component, qty, extra_info, do_cleanup=self.do_cleanup
             ).build()
