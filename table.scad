@@ -17,7 +17,8 @@ use <components/lower_side_tie.scad>
 use <components/short_horizontal_plate.scad>
 use <components/desktop.scad>
 use <components/lower_shelf.scad>
-use <components/upper_side_tie.scad>
+use <components/upper_side_tieA.scad>
+use <components/upper_side_tieB.scad>
 use <components/hutch_shelf_support.scad>
 use <components/hutch_shelf.scad>
 use <components/desktop_support.scad>
@@ -264,30 +265,34 @@ explode([10,6,4], false, show_exploded) {
     color("SkyBlue") {
         // Right inner top tie
         translate([(table_width/4)*3,0,rear_leg_length-top_shelf_timber_height]){
-          upper_side_tie();
+          translate([0,center_leg_setback-center_leg_timber_depth,0]){
+              upper_side_tieA();
+          }
         }
 
         // Right outside top tie
         translate([table_width,0,rear_leg_length-top_shelf_timber_height]){
-          mirror([0,1,0]){
             rotate([0,0,180]){
-              upper_side_tie();
+                translate([0,-1*center_leg_setback+center_leg_timber_depth,0]){
+                    upper_side_tieB();
+                }
             }
-          }
         }
 
         // Left outside top tie
         translate([0,0,rear_leg_length-top_shelf_timber_height]){
-          upper_side_tie();
+            translate([0,center_leg_setback-center_leg_timber_depth,0]){
+                upper_side_tieA();
+            }
         }
 
         // Left inside top tie
         translate([(table_width/4),0,rear_leg_length-top_shelf_timber_height]){
-          mirror([0,1,0]){
             rotate([0,0,180]){
-              upper_side_tie();
+                translate([0,-1*center_leg_setback+center_leg_timber_depth,0]){
+                    upper_side_tieB();
+                }
             }
-          }
         }
     }
 
@@ -295,9 +300,11 @@ explode([10,6,4], false, show_exploded) {
         color(desktop_shelf_color) {
             desktop();
             // left lower shelf
-            lower_shelf();
+            translate([0,0,shelf_height]){
+                lower_shelf();
+            }
             // right lower shelf
-            translate([(table_width/4)*3,0,0]){
+            translate([(table_width/4)*3,0,shelf_height]){
                 lower_shelf();
             }
             // top shelf
@@ -307,7 +314,9 @@ explode([10,6,4], false, show_exploded) {
             }
 
             // hutch shelf
-            hutch_shelf();
+            translate([(table_width/4)-center_leg_timber_width,center_leg_setback-center_leg_timber_depth,hutch_shelf_height+strut_timber_depth]){
+                hutch_shelf();
+            }
 
             // lower left shelf
             translate([leg_timber_width/2,0,left_lower_shelf_height]){
