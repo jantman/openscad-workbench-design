@@ -445,13 +445,15 @@ class WorkbenchBuilder:
             logger.info('Creating directory: %s', COMPONENT_DIR)
             os.makedirs(COMPONENT_DIR)
 
-    def run(self):
+    def run(self, component=None, run_build_sh=True):
         logger.debug(
             'Using font with size %s; example text height: %s', FONT_SIZE,
             FONT_HEIGHT
         )
         # yeah, this is a total cop-out...
-        run_command(['bash', 'build.sh'])
+        if run_build_sh:
+            logger.info('Executing build.sh')
+            run_command(['bash', 'build.sh'])
         if os.path.exists(BOM_CACHE):
             logger.debug('Loading BoM from cache: %s', BOM_CACHE)
             with open(BOM_CACHE, 'r') as fh:
@@ -460,7 +462,7 @@ class WorkbenchBuilder:
             logger.info('Getting BOM from openscad...')
             bom: dict = self._get_bom()
         logger.info('Building components...')
-        self.build_components(bom)
+        self.build_components(bom, only_component=component)
         logger.info('Done building components')
 
     def _get_bom(self) -> dict:
@@ -495,10 +497,16 @@ class WorkbenchBuilder:
                 fh.write('\n')
         return dict(result)
 
-    def build_components(self, bom: dict):
+    def build_components(self, bom: dict, only_component: Optional[str]):
         logger.debug('Finding components')
         for fpath in sorted(glob(os.path.join(TOPDIR, 'components', '*.scad'))):
             component = os.path.basename(fpath).replace('.scad', '')
+            if only_component is not None and only_component != component:
+                logger.warning(
+                    'Run with arguments to only build "%s"; skipping "%s"',
+                    only_component, component
+                )
+                continue
             if component in ['pegboard', 'shelf_support', 'printer']:
                 logger.debug('Skipping component %s in %s', component, fpath)
                 continue
@@ -521,6 +529,14 @@ def parse_args(argv):
         default=True,
         help='Do not clean up intermediate files. Also do not regenerate them '
              'unless manually removed.'
+    )
+    p.add_argument(
+        '-c', '--component', dest='component', action='store', type=str,
+        help='Build only this one component'
+    )
+    p.add_argument(
+        '-B', '--skip-main-build', dest='run_build_sh', action='store_false',
+        default=True, help='execute build.sh (main build)'
     )
     args = p.parse_args(argv)
     return args
@@ -563,4 +579,6 @@ if __name__ == "__main__":
         set_log_debug()
     else:
         set_log_info()
-    WorkbenchBuilder(do_cleanup=args.cleanup).run()
+    WorkbenchBuilder(do_cleanup=args.cleanup).run(
+        component=args.component, run_build_sh=args.run_build_sh
+    )
