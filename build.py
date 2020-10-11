@@ -6,7 +6,6 @@ Requires Python3 (tested with 3.8) and the ImageMagick libraries (libmagickwand-
 
 Dependencies (tested version):
 Pillow (7.2.0)
-Wand (0.6.3)
 
 NOTE: This is REALLY ugly, and frankly I'm embarrassed at letting the world see
 it. It has a bunch of Python antipatterns that make me cringe and make my skin
@@ -25,9 +24,8 @@ import subprocess
 import re
 import json
 from datetime import datetime
+import shutil
 
-from lxml import etree
-from wand.image import Image as WandImage
 from PIL import Image, ImageDraw, ImageFont
 
 FORMAT = "[%(asctime)s %(levelname)s] %(message)s"
@@ -134,16 +132,16 @@ class Component:
     IMG_TITLE_HEIGHT: int = int(FONT_HEIGHT * 1.5)
 
     #: X/height padding inside per-view boxes
-    IMG_X_PADDING: int = int(IMG_BOX_WIDTH / 4)
+    IMG_X_PADDING: int = int(IMG_BOX_WIDTH * 0.1)
 
     #: Y/width padding inside per-view boxes
-    IMG_Y_PADDING: int = int((IMG_BOX_HEIGHT - IMG_TITLE_HEIGHT) / 4)
+    IMG_Y_PADDING: int = int((IMG_BOX_HEIGHT - IMG_TITLE_HEIGHT) * 0.1)
 
     #: Intermediate (per-view) image width
-    INTER_IMG_WIDTH: int = int(IMG_BOX_WIDTH / 2)
+    INTER_IMG_WIDTH: int = int(IMG_BOX_WIDTH - (IMG_X_PADDING * 2))
 
     #: Intermediate (per-view) image height
-    INTER_IMG_HEIGHT: int = int((IMG_BOX_HEIGHT - IMG_TITLE_HEIGHT) / 2)
+    INTER_IMG_HEIGHT: int = int(IMG_BOX_HEIGHT - (IMG_Y_PADDING * 2))
 
     def __init__(
         self, fpath: str, module_name: str, bom_quantity: int,
@@ -170,9 +168,6 @@ class Component:
         )
 
     def build(self):
-        self._build_svgs()
-
-    def _build_svgs(self):
         fpath = os.path.join(
             COMPONENT_DIR, f'{self.module_name}.png'
         )
@@ -191,25 +186,17 @@ class Component:
         ]:
             view = view_pair[0]
             logger.debug('Building view: %s', view)
-            svgpath = self._build_one_svg(view)
-            logger.debug('SVG path: %s', svgpath)
-            pngpath = self._add_view_to_image(img, svgpath, view, 0, y)
+            pngpath = self._add_view_to_image(img, view, 0, y)
             if self._do_cleanup:
-                logger.debug('Cleanup: %s', svgpath)
-                os.unlink(svgpath)
                 logger.debug('Cleanup: %s', pngpath)
                 os.unlink(pngpath)
             view = view_pair[1]
             logger.debug('Building view: %s', view)
-            svgpath = self._build_one_svg(view)
-            logger.debug('SVG path: %s', svgpath)
             pngpath = self._add_view_to_image(
-                img, svgpath, view, self.IMG_BOX_WIDTH+1, y
+                img, view, self.IMG_BOX_WIDTH+1, y
             )
             y += self.IMG_BOX_HEIGHT
             if self._do_cleanup:
-                logger.debug('Cleanup: %s', svgpath)
-                os.unlink(svgpath)
                 logger.debug('Cleanup: %s', pngpath)
                 os.unlink(pngpath)
         self._add_footer_to_image(img, 0, y, overall_x)
@@ -249,9 +236,12 @@ class Component:
         draw.text(right_text_coords, right_text, (0, 0, 0), font=FOOTER_FONT)
 
     def _add_view_to_image(
-        self, img: Image, svgpath: str, view: str, x: int, y: int
+        self, img: Image, view: str, x: int, y: int
     ) -> str:
-        pngpath, width, height = self._svg_to_png(view, svgpath)
+        pngpath = self._generate_png(view)
+        logger.debug('PNG path: %s', pngpath)
+        part = Image.open(pngpath)
+        width, height = part.size
         draw: ImageDraw = ImageDraw.Draw(img)
         box_coords = [
             (x, y),
@@ -266,8 +256,6 @@ class Component:
         )
         logger.debug('Drawing text at: %s', text_coords)
         draw.text(text_coords, view, (0, 0, 0), font=FONT)
-        logger.debug('PNG path: %s', pngpath)
-        part = Image.open(pngpath)
         logger.debug('Add %s view to combined image', view)
         img.paste(
             part, self._center_image_in_box(
@@ -297,112 +285,17 @@ class Component:
         )
         return finalx, finaly
 
-    def _svg_to_png(self, view: str, svgpath: str) -> Tuple[str, int, int]:
+    def _generate_png(self, view: str) -> str:
         pngpath = os.path.join(
             COMPONENT_DIR, f'{self.module_name}_{view}.png'
         )
         if os.path.exists(pngpath):
             logger.debug('Already exists: %s', pngpath)
-            with WandImage(filename=svgpath) as img:
-                width, height = img.size
-            return pngpath, width, height
-        self._resize_svg(svgpath)
-        logger.debug('Loading image: %s', svgpath)
-        with WandImage(filename=svgpath) as img:
-            width, height = img.size
-            resolution = min(img.resolution)
-            logger.debug(
-                'Image is %s x %s at resolution %s', width, height, resolution
-            )
-            logger.debug('Writing to: %s', pngpath)
-            img.save(filename=pngpath)
-        return pngpath, width, height
+            return pngpath
+        self._build_one_png(view, pngpath)
+        return pngpath
 
-    def _resize_svg(self, svgpath: str):
-        """
-        Based on code from: https://github.com/Zverik/svg-resize
-        Resize SVG and add frame for printing in a given format.
-        Written by Ilya Zverev, licensed WTFPL.
-        """
-        logger.debug('Resizing SVG at: %s', svgpath)
-        tree = etree.parse(svgpath, parser=etree.XMLParser(huge_tree=True))
-        svg = tree.getroot()
-        if 'width' not in svg.keys() or 'height' not in svg.keys():
-            raise Exception(
-                'SVG header must contain width and height attributes')
-        viewbox = re.split('[ ,\t]+', svg.get('viewBox', '').strip())
-        if len(viewbox) == 4:
-            for i in [0, 1, 2, 3]:
-                viewbox[i] = self._parse_length(viewbox[i])
-            if viewbox[2] * viewbox[3] <= 0.0:
-                viewbox = None
-        twidth, theight = self._png_size(
-            self._parse_length(svg.get('width')),
-            self._parse_length(svg.get('height'))
-        )
-        logger.debug('Resizing to: %s x %s', twidth, theight)
-        # set svg width and height, update viewport for margin
-        svg.set('width', '{}px'.format(twidth))
-        svg.set('height', '{}px'.format(theight))
-        offsetx = 0
-        offsety = 0
-        margin = 0
-        if twidth / theight > viewbox[2] / viewbox[3]:
-            # target page is wider than source image
-            page_width = viewbox[3] / theight * twidth
-            offsetx = (page_width - viewbox[2]) / 2
-            page_height = viewbox[3]
-        else:
-            page_width = viewbox[2]
-            page_height = viewbox[2] / twidth * theight
-            offsety = (page_height - viewbox[3]) / 2
-        vb_margin = page_width / twidth * margin
-        svg.set('viewBox', '{} {} {} {}'.format(
-            viewbox[0] - vb_margin - offsetx,
-            viewbox[1] - vb_margin - offsety,
-            page_width + vb_margin * 2,
-            page_height + vb_margin * 2))
-        tree.write(svgpath)
-
-    def _parse_length(self, value, def_units='px'):
-        """
-        Based on code from: https://github.com/Zverik/svg-resize
-        Resize SVG and add frame for printing in a given format.
-        Written by Ilya Zverev, licensed WTFPL.
-        """
-        if not value:
-            return 0.0
-        parts = re.match(r'^\s*(-?\d+(?:\.\d+)?)\s*(px|in|cm|mm|pt|pc|%)?',
-                         value)
-        if not parts:
-            raise Exception('Unknown length format: "{}"'.format(value))
-        num = float(parts.group(1))
-        units = parts.group(2) or def_units
-        if units == 'px':
-            return num
-        elif units == 'pt':
-            return num * 1.25
-        elif units == 'pc':
-            return num * 15.0
-        elif units == 'in':
-            return num * 90.0
-        elif units == 'mm':
-            return num * 3.543307
-        elif units == 'cm':
-            return num * 35.43307
-        elif units == '%':
-            return -num / 100.0
-        else:
-            raise Exception('Unknown length units: {}'.format(units))
-
-    def _png_size(self, width: int, height: int) -> List[int]:
-        if width > height:
-            mult = self.INTER_IMG_WIDTH / width
-        else:
-            mult = self.INTER_IMG_HEIGHT / height
-        return [int(width * mult), int(height * mult)]
-
-    def _build_one_svg(self, view: str) -> str:
+    def _build_one_png(self, view: str, pngpath: str) -> str:
         scadpath = os.path.join(
             'individual_components', f'{self.module_name}_{view}.scad'
         )
@@ -415,19 +308,22 @@ class Component:
             with open(scadpath, 'w') as fh:
                 fh.write(self.scad_file(view))
             logger.info('Wrote SCAD file to: %s', scadpath)
-        svgpath = os.path.join(
-            COMPONENT_DIR, f'{self.module_name}_{view}.svg'
-        )
-        if os.path.exists(svgpath):
-            logger.debug('Already exists: %s', svgpath)
-            return svgpath
-        logger.info('Writing %s view SVG', view)
-        cmd = ['openscad', '-o', svgpath, scadpath]
+        logger.info('Writing %s view PNG', view)
+        cmd = [
+            'openscad',
+            '-o', pngpath,
+            '--imgsize', f'{self.INTER_IMG_WIDTH},{self.INTER_IMG_HEIGHT}',
+            '--viewall',
+            '--autocenter',
+            '--render=all',
+            '--colorscheme=WhiteBackground',
+            scadpath
+        ]
         run_command(cmd)
         if self._do_cleanup:
             logger.debug('Cleanup: %s', scadpath)
             os.unlink(scadpath)
-        return svgpath
+        return pngpath
 
     def scad_file(self, view_mode):
         return f'use <../components/{self.module_name}.scad>\n' \
@@ -444,6 +340,21 @@ class WorkbenchBuilder:
         if not os.path.exists(COMPONENT_DIR):
             logger.info('Creating directory: %s', COMPONENT_DIR)
             os.makedirs(COMPONENT_DIR)
+        colorscheme_dir = os.path.expanduser(
+            '~/.config/OpenSCAD/color-schemes/render'
+        )
+        colorscheme_fpath = os.path.join(
+            colorscheme_dir, 'WhiteBackground.json'
+        )
+        if not os.path.exists(colorscheme_dir):
+            logger.info('Creating directories: %s', colorscheme_dir)
+            os.makedirs(colorscheme_dir, exist_ok=True)
+        if not os.path.exists(colorscheme_fpath):
+            logger.info('Copying colorscheme file to: %s', colorscheme_fpath)
+            shutil.copy(
+                'modules/WhiteBackground.json',
+                colorscheme_fpath
+            )
 
     def run(self, component=None, run_build_sh=True):
         logger.debug(
