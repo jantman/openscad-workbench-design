@@ -127,9 +127,17 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 * 1x 4'x8' pegboard, such as [this](https://www.homedepot.com/p/Pegboard-White-Panel-Common-3-16-in-x-4-ft-x-8-ft-Actual-0-155-in-x-47-7-in-x-95-7-in-486140/202189722)
 * 1x 4'x8' [1/8" Hardboard](https://www.homedepot.com/p/Hardboard-Tempered-Panel-Common-1-8-in-4-ft-x-8-ft-Actual-0-115-in-x-47-7-in-x-95-7-in-832777/202189720) or [1/4" MDF](https://www.homedepot.com/p/Medium-Density-Fiberboard-Common-1-4-in-x-2-ft-x-4-ft-Actual-0-216-in-x-23-75-in-x-47-75-in-1508104/202089069)
 
+## Dimensional Drawings for Fabrication and Assembly
+
+These are tough. In short, the only way OpenSCAD can dimension drawings is if you draw, and locate, every line, arrow, and piece of text in 3D space just like any other part. I didn't know that until I'd done most of the work on this design, so I just threw in the towel on it.
+
+[build.py](build.py) (see more below) will create ``individual_components/`` as a directory full of full-page (US Letter / 8.5x11") per-component drawings, each page containing the name, quantity, and views of all six sides. Dimensions must be added by hand, if needed. It will also create three exploded views of the framing. Because of the very poor "exploding" used, and the large number of parts, there are three exploded diagrams each showing one level of horizontal supports.
+
+**To print** the diagrams, ensure LP is set up (``lpoptions -d PrinterName`` to set the default printer) and then just ``lp individual_components/*.png`` Since the images are already sized for the printer resolution and paper size, no scaling is needed.
+
 ## Notes
 
-## Built Images
+### Built Images
 
 Running [build.py](build.py) will regenerate all rendered images in [renders/](renders/) as well as generating printable per-component views and some printable exploded diagrams (each containing a subsection of the full project, for ease of use).
 

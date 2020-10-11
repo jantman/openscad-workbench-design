@@ -44,6 +44,14 @@ BOM_CACHE: str = os.path.join(COMPONENT_DIR, 'bom.json')
 #: Final built BoM
 BOM_FILE: str = os.path.join(TOPDIR, 'BOM.txt')
 
+#: Target final image width. This is based on printing at 600dpi on a
+#: printer that prints 8.33 inches wide on 8.5x11 (US Letter) paper.
+PAGE_WIDTH: int = 4998
+
+#: Target final image height. This is based on printing at 600dpi on a
+#: printer that prints 10.83 inches high on 8.5x11 (US Letter) paper.
+PAGE_HEIGHT: int = 6498
+
 #: Font size to use on images
 FONT_SIZE: int = 120
 
@@ -111,14 +119,6 @@ class Component:
     image size of 4998 x 6498 pixels.
     """
 
-    #: Target final image width. This is based on printing at 600dpi on a
-    #: printer that prints 8.33 inches wide on 8.5x11 (US Letter) paper.
-    PAGE_WIDTH: int = 4998
-
-    #: Target final image height. This is based on printing at 600dpi on a
-    #: printer that prints 10.83 inches high on 8.5x11 (US Letter) paper.
-    PAGE_HEIGHT: int = 6498
-
     #: Height of the footer at the bottom of the page
     FOOTER_HEIGHT: int = FOOTER_FONT_HEIGHT * 2
 
@@ -161,7 +161,7 @@ class Component:
             'IMG_BOX_WIDTH=%s IMG_BOX_HEIGHT=%s INTER_IMG_WIDTH=%s '
             'INTER_IMG_HEIGHT=%s IMG_X_PADDING=%s IMG_Y_PADDING=%s '
             'IMG_TITLE_HEIGHT=%s',
-            self.PAGE_WIDTH, self.PAGE_HEIGHT, self.FOOTER_HEIGHT,
+            PAGE_WIDTH, PAGE_HEIGHT, self.FOOTER_HEIGHT,
             self.IMG_BOX_WIDTH, self.IMG_BOX_HEIGHT, self.INTER_IMG_WIDTH,
             self.INTER_IMG_HEIGHT, self.IMG_X_PADDING, self.IMG_Y_PADDING,
             self.IMG_TITLE_HEIGHT
@@ -365,6 +365,7 @@ class WorkbenchBuilder:
         if run_build_sh:
             logger.info('Executing build.sh')
             run_command(['bash', 'build.sh'])
+        self.build_exploded_views()
         if os.path.exists(BOM_CACHE):
             logger.debug('Loading BoM from cache: %s', BOM_CACHE)
             with open(BOM_CACHE, 'r') as fh:
@@ -375,6 +376,46 @@ class WorkbenchBuilder:
         logger.info('Building components...')
         self.build_components(bom, only_component=component)
         logger.info('Done building components')
+
+    def build_exploded_views(self):
+        logger.info('Rendering exploded views...')
+        for viewname, args in {
+            'exploded_bottom': [
+                '-D', 'show_top_section=false',
+                '-D', 'show_middle_section=false',
+            ],
+            'exploded_middle': [
+                '-D', 'show_bottom_section=false',
+                '-D', 'show_top_section=false',
+            ],
+            'exploded_top': [
+                '-D', 'show_bottom_section=false',
+                '-D', 'show_middle_section=false',
+            ],
+        }.items():
+            pngpath = os.path.join(COMPONENT_DIR, f'{viewname}.png')
+            if os.path.exists(pngpath):
+                logger.info('Already exists: %s', pngpath)
+                continue
+            cmd = [
+                'openscad',
+                '-o', pngpath,
+                '--imgsize', f'{PAGE_HEIGHT},{PAGE_WIDTH}',
+                '--viewall',
+                '--autocenter',
+                '--render=all',
+                '--colorscheme=WhiteBackground',
+                '-D', 'show_surfaces=false',
+                '-D', 'show_exploded=true',
+                '-D', 'show_printer=false',
+                '-D', 'show_printer_control=false',
+                '-D', 'show_mfc_printer=false',
+                '-D', 'show_shelf_supports=false'
+            ]
+            cmd.extend(args)
+            cmd.append('table.scad')
+            run_command(cmd)
+        logger.info('Done rendering exploded views.')
 
     def _get_bom(self) -> dict:
         line_re = re.compile(
