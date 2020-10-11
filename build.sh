@@ -47,7 +47,7 @@ do
   camera=$(echo "$line" | awk -F \| '{print $2}')
   projection=$(echo "$line" | awk -F \| '{print $3}')
   cameraArg=$(echo "$camera" | sed -e 's/\[//g' -e 's/\]/,/g' -e 's/ //g' )
-  /bin/sh -c "openscad -o renders/${prefix}_${name}.png --camera $cameraArg --imgsize $OUTPUTSIZE --view axes,edges,scales --projection $projection --hardwarnings individual_components/shelf_support.scad"
+  /bin/sh -c "openscad -o renders/${prefix}_${name}.png --camera $cameraArg --imgsize $OUTPUTSIZE --view axes,edges,scales --projection $projection --hardwarnings shelf_support_3d_print/shelf_support.scad"
   convert renders/${prefix}_${name}.png -resize 960x540\> renders/${prefix}_${name}_sm.png
   MARKDOWN="${MARKDOWN}"$'\n'$'\n'"[![${prefix}_${name}](renders/${prefix}_${name}_sm.png)](renders/${prefix}_${name}.png)"
 done <<EOF
