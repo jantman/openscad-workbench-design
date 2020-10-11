@@ -129,6 +129,10 @@ Openscad designs for my new workbench. This has been _very_ specifically sized t
 
 ## Notes
 
+## Built Images
+
+Running [build.py](build.py) will regenerate all rendered images in [renders/](renders/) as well as generating printable per-component views and some printable exploded diagrams (each containing a subsection of the full project, for ease of use).
+
 ### Dependencies
 
 This code currently depends on a few STL files from another repository of mine. Rather than pull in the whole repository, which is quite large, I've included ``get_deps.sh`` which downloads the necessary files from GitHub.
