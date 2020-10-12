@@ -383,14 +383,39 @@ class WorkbenchBuilder:
             'exploded_bottom': [
                 '-D', 'show_top_section=false',
                 '-D', 'show_middle_section=false',
+                '-D', 'show_exploded=true',
+                '--render=all',
             ],
             'exploded_middle': [
                 '-D', 'show_bottom_section=false',
                 '-D', 'show_top_section=false',
+                '-D', 'show_exploded=true',
+                '--render=all',
             ],
             'exploded_top': [
                 '-D', 'show_bottom_section=false',
                 '-D', 'show_middle_section=false',
+                '-D', 'show_exploded=true',
+                '--render=all',
+            ],
+            'framing_default': [],
+            'framing_front_left': [
+                '--camera', '89.48,32.46,37.45,65.50,0.00,340.90,367.72',
+            ],
+            'framing_left_oblique': [
+                '--camera', '89.50,34.73,42.12,88.60,0.00,294.00,330.95',
+            ],
+            'framing_left': [
+                '--camera', '89.50,34.73,42.12,93.50,0.00,273.70,330.95',
+            ],
+            'framing_back_lower': [
+                '--camera', '82.93,40.29,48.99,115.20,0.00,216.30,330.95',
+            ],
+            'framing_front_lower': [
+                '--camera', '89.48,32.46,37.45,115.90,0.00,39.70,367.72',
+            ],
+            'framing_right_rear_lower': [
+                '--camera', '93.09,37.13,57.98,105.40,0.00,142.60,330.95',
             ],
         }.items():
             pngpath = os.path.join(COMPONENT_DIR, f'{viewname}.png')
@@ -403,10 +428,8 @@ class WorkbenchBuilder:
                 '--imgsize', f'{PAGE_HEIGHT},{PAGE_WIDTH}',
                 '--viewall',
                 '--autocenter',
-                '--render=all',
                 '--colorscheme=WhiteBackground',
                 '-D', 'show_surfaces=false',
-                '-D', 'show_exploded=true',
                 '-D', 'show_printer=false',
                 '-D', 'show_printer_control=false',
                 '-D', 'show_mfc_printer=false',
