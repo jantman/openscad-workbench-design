@@ -30,7 +30,7 @@ module upper_side_tieA()
                 echo(str("BOM ITEM: upper_side_tieA length=", tie_length, " material=", top_shelf_timber_depth, "x", top_shelf_timber_height));
                 cube([top_shelf_timber_depth,tie_length,top_shelf_timber_height],false);
                 // Left cutout
-                translate([strut_timber_depth/2,tie_length-leg_timber_depth,0])
+                translate([0,tie_length-leg_timber_depth,0])
                 {
                     cube([top_shelf_timber_depth,top_shelf_timber_depth,top_shelf_timber_height/2],false);
                 }
