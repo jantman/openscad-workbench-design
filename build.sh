@@ -7,7 +7,9 @@ set -o errexit
 OUTPUTSIZE=3840,2160
 MARKDOWN=""
 
-rm -f renders/*.png
+rm -f renders/*.png renders/*.stl
+
+openscad -o renders/framing.stl -D'show_surfaces=false' -D'show_printer=false' -D'show_printer_control=false' -D'show_mfc_printer=false' -D'show_shelf_supports=false' table.scad
 
 declare -A VIEWS
 VIEWS[assembled]="-D'show_surfaces=true' -D'show_printer=true' -D'show_printer_control=true' -D'show_mfc_printer=true' -D'show_shelf_supports=true'"
