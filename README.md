@@ -2,6 +2,26 @@
 
 Openscad designs for my new workbench. This has been _very_ specifically sized to fit certain items.
 
+## Final Build
+
+There were some changes to the plans in my build. The only ones that are important should be noticeable in the photos.
+
+[![RAW_1958.JPG](RAW_1958_sm.JPG)](RAW_1958.JPG)
+
+[![RAW_1959.JPG](RAW_1959_sm.JPG)](RAW_1959.JPG)
+
+[![RAW_1960.JPG](RAW_1960_sm.JPG)](RAW_1960.JPG)
+
+[![RAW_1964.JPG](RAW_1964_sm.JPG)](RAW_1964.JPG)
+
+[![RAW_1965.JPG](RAW_1965_sm.JPG)](RAW_1965.JPG)
+
+[![RAW_1967.JPG](RAW_1967_sm.JPG)](RAW_1967.JPG)
+
+[![RAW_1962.JPG](RAW_1962_sm.JPG)](RAW_1962.JPG)
+
+[![RAW_1963.JPG](RAW_1963_sm.JPG)](RAW_1963.JPG)
+
 ## Rendered Images
 
 [![assembled_default](renders/assembled_default_sm.png)](renders/assembled_default.png)
